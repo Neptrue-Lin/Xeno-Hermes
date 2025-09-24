@@ -1,0 +1,5 @@
+package org.neptrueworks.xenohermes.domain.social.request
+
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateIdentifierGeneratable
+
+public interface SocialRequestIdentifierGenerator : AggregateIdentifierGeneratable<SocialRequestIdentifier>

@@ -1,0 +1,3 @@
+package org.neptrueworks.xenohermes.domain.common.aggregation
+
+public interface AggregateIdentifier

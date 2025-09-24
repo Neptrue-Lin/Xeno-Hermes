@@ -1,0 +1,5 @@
+package org.neptrueworks.xenohermes.domain.social.invitation
+
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateIdentifierGeneratable
+
+public interface SocialInvitationIdentifierGenerator : AggregateIdentifierGeneratable<SocialInvitationIdentifier>

@@ -1,0 +1,5 @@
+package org.neptrueworks.xenohermes.domain.interlocution.mention.events
+
+import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageCorrespondenceEvent
+
+public interface MessageMentionedEvent : MessageCorrespondenceEvent

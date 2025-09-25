@@ -5,7 +5,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionContentRestriction
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 
-public data class InterlocutionModerationCreatedEvent(
+public data class InterlocutionModerationCreatedEvent private constructor(
     val moderationAgent: InterlocutionModerationAgent,
     val behaviorRestriction: InterlocutionBehaviorRestriction,
     val contentRestriction: InterlocutionContentRestriction

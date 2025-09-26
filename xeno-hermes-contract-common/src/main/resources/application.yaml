@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/xeno_hermes
+    username: root
+    password: 123456
+jimmer:
+  language: kotlin
+  default-enum-strategy: ordinal
+  in-list-to-any-equality-enabled: true

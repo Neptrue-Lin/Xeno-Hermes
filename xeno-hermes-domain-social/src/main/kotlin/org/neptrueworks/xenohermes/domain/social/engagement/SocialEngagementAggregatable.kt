@@ -5,9 +5,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.*
 
 public interface SocialEngagementAggregatable : Aggregatable {
     val engager: SocialEngagementEngager
-    val engagementManifest: SocialEngagementManifest
+    val engagementThreshold: SocialEngagementThreshold
     val requestEngagementPrivilege: SocialRequestEngagementPrivilege
     val invitationEngagementPrivilege: SocialInvitationEngagementPrivilege
-    val engagerEngagementThreshold: SocialEngagementThreshold
-    val engageeEngagementThreshold: SocialEngagementThreshold
 }

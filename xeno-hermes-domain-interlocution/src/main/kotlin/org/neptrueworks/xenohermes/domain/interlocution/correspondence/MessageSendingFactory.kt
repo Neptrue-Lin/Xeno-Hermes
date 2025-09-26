@@ -20,6 +20,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.scheme.isOverlength
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageSendingFactory(
     private val identifierGenerator: MessageIdentifierGeneratable,
@@ -39,7 +40,7 @@ public abstract class MessageSendingFactory(
         val participant = InterlocutionParticipant(sender.identifier);
 
         val senderEngagement = this.engagementRepository.fetchByIdentifier(engagerSender);
-        if (senderEngagement.engagementManifest.isNotEngaged(engageeReceiver))
+        if (senderEngagement.checkEngagement(engageeReceiver).isNotEngaged())
             throw MessageReceiverNotEngaged(sender, receiver);
 
         val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent);

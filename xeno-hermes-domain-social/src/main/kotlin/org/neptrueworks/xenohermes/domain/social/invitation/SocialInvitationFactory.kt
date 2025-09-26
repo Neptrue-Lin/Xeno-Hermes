@@ -23,7 +23,7 @@ public abstract class SocialInvitationFactory : DomainService {
         
 //        val blockage = this.blockageRepository.fetchByAudiences(agent, audiences);
 //        audiences.forEach { audience ->
-//            if (blockage.blockageManifest.isBlocked(audience))
+//            if (blockage.blockageList.isBlocked(audience))
 //                throw AudienceBlockedByAgentException(agent, audience);
 //        }
         

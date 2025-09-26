@@ -14,7 +14,6 @@ public abstract class SocialEngagementFactory : DomainService {
             requestEngagementPrivilege = command.requestEngagementPrivilege,
             invitationEngagementPrivilege = command.invitationEngagementPrivilege,
             engagerEngagementThreshold = command.engagerEngagementThreshold,
-            engageeEngagementThreshold = command.engageeEngagementThreshold,
         )
     }
     
@@ -23,6 +22,5 @@ public abstract class SocialEngagementFactory : DomainService {
         requestEngagementPrivilege: SocialRequestEngagementPrivilege,
         invitationEngagementPrivilege: SocialInvitationEngagementPrivilege,
         engagerEngagementThreshold: SocialEngagementThreshold,
-        engageeEngagementThreshold: SocialEngagementThreshold,
     ): SocialEngagementAggregateRoot;
 }

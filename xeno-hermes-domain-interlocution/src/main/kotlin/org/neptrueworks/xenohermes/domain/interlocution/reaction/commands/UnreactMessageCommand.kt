@@ -17,6 +17,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageR
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 import org.springframework.stereotype.Service
 
 public data class UnreactMessageCommand(
@@ -43,7 +44,7 @@ public final class UnreactMessageCommandHandler(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
         
         val unreactorEngagement = this.engagementRepository.fetchByIdentifier(engagerUnreactor);
-        if (unreactorEngagement.engagementManifest.isNotEngaged(engageeAgent))
+        if (unreactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(unreactor, agent);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

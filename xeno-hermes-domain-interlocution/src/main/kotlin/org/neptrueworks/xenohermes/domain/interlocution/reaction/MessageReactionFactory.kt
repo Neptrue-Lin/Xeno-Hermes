@@ -16,6 +16,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageReactionFactory(
     private val engagementRepository: SocialEngagementRepositable,
@@ -31,7 +32,7 @@ public abstract class MessageReactionFactory(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
         val agentToReactor = this.engagementRepository.fetchByIdentifier(engagerReactor);
-        if (agentToReactor.engagementManifest.isNotEngaged(engageeAgent))
+        if (agentToReactor.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
 
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

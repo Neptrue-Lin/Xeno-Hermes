@@ -1,10 +1,10 @@
 package org.neptrueworks.xenohermes.domain.social.engagement.params
 
-public data class SocialEngagementCount private constructor(val currentEngagement: UInt) {
+public data class SocialEngagementCount(val currentEngagement: Int) {
     public companion object {
-        public val INITIAL_ENGAGEMENT get() = SocialEngagementCount(0U);
+        public val INITIAL get() = SocialEngagementCount(0);
     }
-    internal final operator fun inc() = SocialEngagementCount(this.currentEngagement + 1U)
+    internal final operator fun inc() = SocialEngagementCount(this.currentEngagement + 1)
     
-    internal final operator fun dec() = SocialEngagementCount(this.currentEngagement - 1U)
+    internal final operator fun dec() = SocialEngagementCount(this.currentEngagement - 1)
 }

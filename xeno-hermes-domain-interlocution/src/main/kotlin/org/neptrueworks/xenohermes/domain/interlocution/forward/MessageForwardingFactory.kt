@@ -18,6 +18,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageForwardingFactory (
     private val correspondenceRepository: MessageCorrespondenceRepositable,
@@ -53,9 +54,9 @@ public abstract class MessageForwardingFactory (
         val engageeDestination = SocialEngagementEngagee(destination.identifier);
 
         val forwarderEngagement = this.engagementRepository.fetchByIdentifier(engagerForwarder);
-        if (forwarderEngagement.engagementManifest.isNotEngaged(engageeDeparture))
+        if (forwarderEngagement.checkEngagement(engageeDeparture).isNotEngaged())
             throw ForwardDepartureNotEngagedException(forwarder, departure);
-        if (forwarderEngagement.engagementManifest.isNotEngaged(engageeDestination))
+        if (forwarderEngagement.checkEngagement(engageeDestination).isNotEngaged())
             throw ForwardDestinationNotEngagedException(forwarder, destination);
     }
 

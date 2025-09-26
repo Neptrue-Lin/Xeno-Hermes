@@ -3,6 +3,7 @@ package org.neptrueworks.xenohermes.domain.social.blockage
 import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.social.blockage.commands.BlockInterlocutorCommand
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
+import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageCount
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageThreshold
 import org.springframework.stereotype.Component
 

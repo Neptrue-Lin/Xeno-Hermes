@@ -5,7 +5,7 @@ import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorBlockedEvent
 import org.neptrueworks.xenohermes.domain.social.blockage.events.SocialBlockageEvent
-import org.neptrueworks.xenohermes.domain.social.blockage.params.InterlocutorBlockageDateTime
+import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageDateTime
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageThreshold
@@ -15,7 +15,7 @@ public data class BlockInterlocutorCommand(
     val blocker: SocialBlockageBlocker,
     val blockee: SocialBlockageBlockee,
     val blockageThreshold: SocialBlockageThreshold,
-    val blockageDateTime: InterlocutorBlockageDateTime
+    val blockageDateTime: SocialBlockageDateTime
 ) : SocialBlockageCommand
 
 @Service

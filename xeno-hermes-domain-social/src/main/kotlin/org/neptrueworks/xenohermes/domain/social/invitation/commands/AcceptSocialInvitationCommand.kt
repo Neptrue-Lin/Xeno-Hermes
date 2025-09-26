@@ -5,6 +5,7 @@ import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
+import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.exceptions.InvitationEngagementAlreadyForbiddenException
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
@@ -43,7 +44,7 @@ public final class AcceptSocialInvitationCommandHandler(
         
         
         val blockage = this.blockageRepository.fetchByIdentifier(blockerAgent);
-        if (blockage.blockageManifest.isBlocked(blockeeAccepter))
+        if (blockage.checkBlockage(blockeeAccepter).isBlocked())
             throw InvitationAgentBlockedAccepter(agent, accepter);
 
         val engagement = this.engagementRepository.fetchByIdentifier(engagerAgent);

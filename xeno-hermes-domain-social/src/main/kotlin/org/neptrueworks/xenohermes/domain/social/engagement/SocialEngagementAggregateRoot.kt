@@ -7,56 +7,66 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.*
 
 public abstract class SocialEngagementAggregateRoot : AggregateRoot(), SocialEngagementAggregatable {
     public abstract override val engager: SocialEngagementEngager
-    public abstract override val engagementManifest: SocialEngagementManifest;
+    public abstract override val engagementThreshold: SocialEngagementThreshold
     public abstract override var requestEngagementPrivilege: SocialRequestEngagementPrivilege protected set
     public abstract override var invitationEngagementPrivilege: SocialInvitationEngagementPrivilege protected set
+    protected abstract val engagementCatalog: SocialEngagementCatalog
+    
+    public final fun checkEngagement(engagee: SocialEngagementEngagee) =
+        this.engagementCatalog.checkEngagement(engagee)
 
-    public abstract override val engagerEngagementThreshold: SocialEngagementThreshold;
-    public abstract override val engageeEngagementThreshold: SocialEngagementThreshold;
-    
     internal final fun engageInterlocutor(command: EngageInterlocutorCommand) {
-        if (this.engagementManifest.isEngaged(command.engagee))
+        val engagement = this.engagementCatalog.checkEngagement(command.engagee);
+        if (engagement.isEngaged()) 
             throw EngageeAlreadyEngagedException(command.engager, command.engagee);
-        if (this.engagerEngagementThreshold.isMaximumEngagementExceeds(this.engagementManifest.engagerEngagementCount))
-            throw EngagerEngagementThresholdExceededException(command.engager, this.engagerEngagementThreshold);
-        if (this.engageeEngagementThreshold.isMaximumEngagementExceeds(this.engagementManifest.engageeEngagementCount))
-            throw EngageeEngagementThresholdExceededException(command.engagee, this.engageeEngagementThreshold);
         
-        this.engagementManifest.engage(command.engager, command.engagee);
+        engagement as SocialEngagement.NotEngaged;
+        if (engagement.isEngagerMaximumEngagementExceeds())
+            throw EngagerEngagementThresholdExceededException(command.engager, this.engagementThreshold);
+        if (engagement.isEngageeMaximumEngagementExceeds())
+            throw EngageeEngagementThresholdExceededException(command.engagee, engagement.engageeEngagementThreshold);
+
+        this.engagementCatalog.engage(command.engager, command.engagee);
     }
-    
+
     internal final fun disengageInterlocutor(command: DisengageInterlocutorCommand) {
-        if (this.engagementManifest.isNotEngaged(command.disengagee))
+        val engagement = this.engagementCatalog.checkEngagement(command.disengagee);
+        if (engagement.isNotEngaged())
             throw DisengageeNotEngagedException(command.disengager);
-        
-        this.engagementManifest.disengage(command.disengager, command.disengagee);
+
+        this.engagementCatalog.disengage(command.disengager, command.disengagee);
     }
-    
+
     internal final fun permitRequestEngagement(command: PermitRequestEngagementCommand) {
         if (this.requestEngagementPrivilege.isPermitted())
             throw RequestEngagementAlreadyPermittedException(command.engager);
-        
+
         this.requestEngagementPrivilege = SocialRequestEngagementPrivilege.PERMITTED;
     }
-    
+
     internal final fun forbidRequestEngagement(command: ForbidRequestEngagementCommand) {
         if (this.requestEngagementPrivilege.isForbidden())
             throw RequestEngagementAlreadyForbiddenException(command.engager);
-        
+
         this.requestEngagementPrivilege = SocialRequestEngagementPrivilege.FORBIDDEN;
     }
-    
+
     internal final fun permitInvitationEngagement(command: PermitInvitationEngagementCommand) {
         if (this.invitationEngagementPrivilege.isPermitted())
             throw InvitationEngagementAlreadyPermittedException(command.engager);
-        
+
         this.invitationEngagementPrivilege = SocialInvitationEngagementPrivilege.PERMITTED;
     }
-    
+
     internal final fun forbidInvitationEngagement(command: ForbidInvitationEngagementCommand) {
         if (this.invitationEngagementPrivilege.isForbidden())
             throw InvitationEngagementAlreadyForbiddenException(command.engager);
-        
+
         this.invitationEngagementPrivilege = SocialInvitationEngagementPrivilege.FORBIDDEN;
     }
+    
+    private final inline fun SocialEngagement.NotEngaged.isEngagerMaximumEngagementExceeds() =
+        engagementThreshold.isMaximumEngagementExceeds(this.engagerEngagementCount)
+    private final inline fun SocialEngagement.NotEngaged.isEngageeMaximumEngagementExceeds() =
+        this.engageeEngagementThreshold.isMaximumEngagementExceeds(this.engageeEngagementCount)
 }

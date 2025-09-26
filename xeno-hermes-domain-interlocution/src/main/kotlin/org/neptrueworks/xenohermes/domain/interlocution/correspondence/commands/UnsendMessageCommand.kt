@@ -14,6 +14,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.Me
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 import org.springframework.stereotype.Service
 
 public data class UnsendMessageCommand(
@@ -35,7 +36,7 @@ public final class UnsendMessageCommandHandler(
         val engageeReceiver = SocialEngagementEngagee(command.unsender.identifier);
         
         val engagement = this.engagementRepository.fetchByIdentifier(engagerUnsender);
-        if (engagement.engagementManifest.isNotEngaged(engageeReceiver))
+        if (engagement.checkEngagement(engageeReceiver).isNotEngaged())
             throw ReceiverNotEngagedException(command.unsender, command.receiver);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(command.conversationId, command.messageId);

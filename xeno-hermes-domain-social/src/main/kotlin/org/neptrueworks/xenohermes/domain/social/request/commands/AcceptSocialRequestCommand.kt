@@ -6,9 +6,11 @@ import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageAggregat
 import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
+import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isEngaged
 import org.neptrueworks.xenohermes.domain.social.request.SocialRequestIdentifier
 import org.neptrueworks.xenohermes.domain.social.request.SocialRequestRepositable
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestAcceptedEvent
@@ -43,11 +45,11 @@ public final class AcceptSocialRequestCommandHandler(
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
     
         val agentBlockage: SocialBlockageAggregateRoot = this.blockageRepository.fetchByIdentifier(blockerAgent);
-        if (agentBlockage.blockageManifest.isBlocked(blockeeRequester))
+        if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
 
         val agentEngagement = this.engagementRepository.fetchByIdentifier(engagerAgent);
-        if (agentEngagement.engagementManifest.isEngaged(engageeRequester))
+        if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
 
         socialRequest.acceptSocialRequest(command);

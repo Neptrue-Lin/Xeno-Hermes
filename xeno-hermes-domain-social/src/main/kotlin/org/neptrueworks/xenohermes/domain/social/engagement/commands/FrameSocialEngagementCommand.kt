@@ -17,7 +17,6 @@ public data class FrameSocialEngagementCommand(
     val requestEngagementPrivilege: SocialRequestEngagementPrivilege,
     val invitationEngagementPrivilege: SocialInvitationEngagementPrivilege,
     val engagerEngagementThreshold: SocialEngagementThreshold,
-    val engageeEngagementThreshold: SocialEngagementThreshold,
 ) : SocialEngagementCommand
 
 @Service

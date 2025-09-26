@@ -17,6 +17,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageR
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public data class ChangeMessageReactionCommand(
     val reactor: MessageReactionReactor,
@@ -42,7 +43,7 @@ public final class ChangeMessageReactionCommandHandler(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
         val reactorEngagement = this.engagementRepositable.fetchByIdentifier(engagerReactor);
-        if (reactorEngagement.engagementManifest.isNotEngaged(engageeAgent))
+        if (reactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

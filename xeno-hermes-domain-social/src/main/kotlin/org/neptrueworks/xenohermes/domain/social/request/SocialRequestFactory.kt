@@ -4,10 +4,12 @@ import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
+import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.exceptions.RequestEngagementAlreadyForbiddenException
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
+import org.neptrueworks.xenohermes.domain.social.engagement.params.isEngaged
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isForbidden
 import org.neptrueworks.xenohermes.domain.social.request.commands.SendSocialRequestCommand
 import org.neptrueworks.xenohermes.domain.social.request.exceptions.RequestAgentAlreadyEngagedException
@@ -30,11 +32,11 @@ public abstract class SocialRequestFactory : DomainService {
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
 
         val agentBlockage = this.blockageRepository.fetchByIdentifier(blockerAgent);
-        if (agentBlockage.blockageManifest.isBlocked(blockeeRequester))
+        if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
         
         val agentEngagement = this.engagementRepository.fetchByIdentifier(engagerAgent);
-        if (agentEngagement.engagementManifest.isEngaged(engageeRequester))
+        if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
         if (agentEngagement.requestEngagementPrivilege.isForbidden())
             throw RequestEngagementAlreadyForbiddenException(engagerAgent);

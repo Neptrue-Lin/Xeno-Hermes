@@ -39,6 +39,16 @@ public final class InlineClassMapperGenerator(
         else throw Exception("Unknown module for package: $valueClassPackage");
     }
     
+    private fun getAggregateName(valueClassPackage: String) : String {
+        val moduleName = this.getModuleName(valueClassPackage);
+        val segments = valueClassPackage.split('.');
+        val moduleIndex = segments.indexOf(moduleName);
+        if (moduleIndex == -1 || moduleIndex + 1 >= segments.size) {
+            throw Exception("Cannot determine aggregate name from package: $valueClassPackage")
+        }
+        return segments[moduleIndex + 1];
+    }
+    
     private fun generateMapper(valueClass: KSClassDeclaration) {
         val valueClassName = valueClass.simpleName.asString();
         val valueClassPackage = valueClass.packageName.asString();
@@ -51,12 +61,13 @@ public final class InlineClassMapperGenerator(
 
         val moduleName = this.getModuleName(valueClassPackage);
         val targetName = this.getTargetName(valueClassPackage);
-        val packageName = "org.neptrueworks.xenohermes.${targetName}.${moduleName}.mapping";
+        val aggregateName = this.getAggregateName(valueClassPackage);
+        val packageName = "org.neptrueworks.xenohermes.${targetName}.${moduleName}.${aggregateName}.mapping";
        
         val rootDirectory = File(System.getProperty("user.dir")).parentFile;
         val file = File(
             "$rootDirectory/xeno-hermes-${targetName}-${moduleName}/build/generated/ksp/main/kotlin" +
-            "/org/neptrueworks/xenohermes/${targetName}/${moduleName}/mapping/${valueClassName}Mapper.kt"
+            "/org/neptrueworks/xenohermes/${targetName}/${moduleName}/${aggregateName}/mapping/${valueClassName}Mapper.kt"
         )
 
         if (!file.getParentFile().exists())

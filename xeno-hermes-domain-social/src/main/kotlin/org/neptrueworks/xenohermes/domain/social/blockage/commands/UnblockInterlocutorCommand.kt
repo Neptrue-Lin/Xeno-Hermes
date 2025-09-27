@@ -20,7 +20,7 @@ public final class UnblockInterlocutorCommandHandler(
     private val eventTrigger: DomainEventRaiseable<SocialBlockageEvent>
 ) : CommandHandler<UnblockInterlocutorCommand>() {
     public override fun handle(command: UnblockInterlocutorCommand) {
-        val socialBlockage = this.repository.fetchByIdentifier(command.unblocker);
+        val socialBlockage = this.repository.fetchByIdentifier(command.unblocker, command.unblockee);
         socialBlockage.unblockInterlocutor(command);
         this.eventTrigger.raise(InterlocutorUnblockedEvent.initialize(command));
         this.repository.reposit(socialBlockage);

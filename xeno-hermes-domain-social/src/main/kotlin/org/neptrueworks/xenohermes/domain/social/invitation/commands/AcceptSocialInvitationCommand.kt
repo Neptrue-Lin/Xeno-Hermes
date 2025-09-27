@@ -43,7 +43,7 @@ public final class AcceptSocialInvitationCommandHandler(
         
         
         
-        val blockage = this.blockageRepository.fetchByIdentifier(blockerAgent);
+        val blockage = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeAccepter);
         if (blockage.checkBlockage(blockeeAccepter).isBlocked())
             throw InvitationAgentBlockedAccepter(agent, accepter);
 

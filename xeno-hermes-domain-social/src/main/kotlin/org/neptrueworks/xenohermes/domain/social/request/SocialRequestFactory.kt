@@ -31,7 +31,7 @@ public abstract class SocialRequestFactory : DomainService {
         val engagerAgent = SocialEngagementEngager(agent.identifier);
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
 
-        val agentBlockage = this.blockageRepository.fetchByIdentifier(blockerAgent);
+        val agentBlockage = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
         if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
         

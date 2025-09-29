@@ -2,7 +2,8 @@ package org.neptrueworks.xenohermes.domain.social.engagement.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRestrictionRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.events.SocialEngagementEvent
 import org.neptrueworks.xenohermes.domain.social.engagement.events.SocialInvitationEngagementPermittedEvent
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
@@ -14,13 +15,13 @@ public data class PermitInvitationEngagementCommand(
 
 @Service
 public final class PermitInvitationEngagementCommandHandler(
-    private val repository: SocialEngagementRepositable,
+    private val repository: SocialEngagementRestrictionRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialEngagementEvent>
 ) : CommandHandler<PermitInvitationEngagementCommand>() {
     public override fun handle(command: PermitInvitationEngagementCommand) {
-        val socialEngagement = this.repository.fetchByIdentifier(command.engager);
-        socialEngagement.permitInvitationEngagement(command);
+        val engagementRestriction = this.repository.fetchByIdentifier(command.engager);
+        engagementRestriction.permitInvitationEngagement(command);
         this.eventTrigger.raise(SocialInvitationEngagementPermittedEvent.initialize(command));
-        this.repository.reposit(socialEngagement);
+        this.repository.reposit(engagementRestriction);
     }
 }

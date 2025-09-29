@@ -15,7 +15,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
@@ -23,7 +23,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 public abstract class MessageForwardingFactory (
     private val correspondenceRepository: MessageCorrespondenceRepositable,
     private val moderationRepository: InterlocutionModerationRepositable,
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val identifierGenerator: MessageIdentifierGeneratable,
 ) : AggregateRootFactory(), DomainService {
     internal final fun forwardMessage(command: ForwardMessageCommand): MessageCorrespondenceAggregateRoot {
@@ -53,7 +53,7 @@ public abstract class MessageForwardingFactory (
         val engageeDeparture = SocialEngagementEngagee(departure.identifier);
         val engageeDestination = SocialEngagementEngagee(destination.identifier);
 
-        val forwarderEngagement = this.engagementRepository.fetchByIdentifier(engagerForwarder);
+        val forwarderEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerForwarder, engageeDeparture);
         if (forwarderEngagement.checkEngagement(engageeDeparture).isNotEngaged())
             throw ForwardDepartureNotEngagedException(forwarder, departure);
         if (forwarderEngagement.checkEngagement(engageeDestination).isNotEngaged())

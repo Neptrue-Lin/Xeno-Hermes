@@ -12,7 +12,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.mention.exceptions.Messa
 import org.neptrueworks.xenohermes.domain.interlocution.mention.isNotMentioned
 import org.neptrueworks.xenohermes.domain.interlocution.mention.params.MessageMentionAgent
 import org.neptrueworks.xenohermes.domain.interlocution.mention.params.MessageMentionMentioner
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.springframework.stereotype.Service
 
@@ -26,7 +26,7 @@ internal data class MentionIndividualsCommand(
 
 @Service
 internal final class MentionIndividualsCommandHandler(
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageCorrespondenceEvent>,
 ) : CommandHandler<MentionIndividualsCommand>() {
     public override fun handle(command: MentionIndividualsCommand) {
@@ -36,7 +36,6 @@ internal final class MentionIndividualsCommandHandler(
         
         val engagerAgent = SocialEngagementEngager(command.agent.identifier);
         // TODO
-        this.engagementRepository.fetchByIdentifier(engagerAgent);
         this.eventTrigger.raise(MessageIndividualMentionedEvent.initialize(command));
     }
 }

@@ -11,7 +11,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exception
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceReceiver
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceUnsender
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageUnsendDateTime
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
@@ -28,14 +28,14 @@ public data class UnsendMessageCommand(
 @Service
 public final class UnsendMessageCommandHandler(
     private val correspondenceRepository: MessageCorrespondenceRepositable,
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageCorrespondenceEvent>
 ) : CommandHandler<UnsendMessageCommand>() {
     public override fun handle(command: UnsendMessageCommand) {
         val engagerUnsender = SocialEngagementEngager(command.unsender.identifier);
         val engageeReceiver = SocialEngagementEngagee(command.unsender.identifier);
         
-        val engagement = this.engagementRepository.fetchByIdentifier(engagerUnsender);
+        val engagement = this.engagementCatalogRepository.fetchByIdentifier(engagerUnsender, engageeReceiver);
         if (engagement.checkEngagement(engageeReceiver).isNotEngaged())
             throw ReceiverNotEngagedException(command.unsender, command.receiver);
         

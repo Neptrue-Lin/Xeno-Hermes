@@ -14,7 +14,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.exceptions.Reac
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionAgent
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionReactor
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionType
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
@@ -28,7 +28,7 @@ public data class ChangeMessageReactionCommand(
 ) : MessageCorrespondenceCommand;
 
 public final class ChangeMessageReactionCommandHandler(
-    private val engagementRepositable: SocialEngagementRepositable,
+    private val engagementRepositable: SocialEngagementCatalogingRepositable,
     private val correspondenceRepository: MessageCorrespondenceRepositable,
     private val reactionRepository: MessageReactionRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageReactionChangedEvent>
@@ -42,7 +42,7 @@ public final class ChangeMessageReactionCommandHandler(
         val engagerReactor = SocialEngagementEngager(reactor.identifier);
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
-        val reactorEngagement = this.engagementRepositable.fetchByIdentifier(engagerReactor);
+        val reactorEngagement = this.engagementRepositable.fetchByIdentifier(engagerReactor, engageeAgent);
         if (reactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
         

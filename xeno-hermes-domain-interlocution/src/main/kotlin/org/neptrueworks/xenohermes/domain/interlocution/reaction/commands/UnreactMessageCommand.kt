@@ -14,7 +14,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.exceptions.Reac
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.exceptions.ReactionMessageUnsentException
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionAgent
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionReactor
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
@@ -29,7 +29,7 @@ public data class UnreactMessageCommand(
 
 @Service
 public final class UnreactMessageCommandHandler(
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val correspondenceRepository: MessageCorrespondenceRepositable,
     private val reactionRepository: MessageReactionRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageReactionEvent>
@@ -43,7 +43,7 @@ public final class UnreactMessageCommandHandler(
         val engagerUnreactor = SocialEngagementEngager(unreactor.identifier);
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
         
-        val unreactorEngagement = this.engagementRepository.fetchByIdentifier(engagerUnreactor);
+        val unreactorEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerUnreactor, engageeAgent);
         if (unreactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(unreactor, agent);
         

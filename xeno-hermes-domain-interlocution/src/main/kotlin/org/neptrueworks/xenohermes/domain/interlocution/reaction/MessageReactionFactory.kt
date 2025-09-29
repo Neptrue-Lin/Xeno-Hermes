@@ -13,13 +13,13 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.exceptions.Reac
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionReactor
 import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageReactionStatus
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageReactionFactory(
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val correspondenceRepository: MessageCorrespondenceRepositable,
 ) : AggregateRootFactory(), DomainService {
     internal final fun reactMessage(command: ReactMessageCommand): MessageReactionAggregateRoot {
@@ -31,7 +31,7 @@ public abstract class MessageReactionFactory(
         val engagerReactor = SocialEngagementEngager(reactor.identifier);
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
-        val agentToReactor = this.engagementRepository.fetchByIdentifier(engagerReactor);
+        val agentToReactor = this.engagementCatalogRepository.fetchByIdentifier(engagerReactor, engageeAgent);
         if (agentToReactor.checkEngagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
 

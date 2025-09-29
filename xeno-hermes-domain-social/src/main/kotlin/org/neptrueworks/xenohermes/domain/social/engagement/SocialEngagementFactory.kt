@@ -8,7 +8,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialInvitat
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialRequestEngagementPrivilege
 
 public abstract class SocialEngagementFactory : DomainService {
-    internal final fun frameActor(command: FrameSocialEngagementCommand): SocialEngagementAggregateRoot {
+    internal final fun frameEngagement(command: FrameSocialEngagementCommand): SocialEngagementFramingAggregateRoot {
         return produceSocialEngagement(
             engager = command.engager,
             requestEngagementPrivilege = command.requestEngagementPrivilege,
@@ -22,5 +22,5 @@ public abstract class SocialEngagementFactory : DomainService {
         requestEngagementPrivilege: SocialRequestEngagementPrivilege,
         invitationEngagementPrivilege: SocialInvitationEngagementPrivilege,
         engagerEngagementThreshold: SocialEngagementThreshold,
-    ): SocialEngagementAggregateRoot;
+    ): SocialEngagementFramingAggregateRoot;
 }

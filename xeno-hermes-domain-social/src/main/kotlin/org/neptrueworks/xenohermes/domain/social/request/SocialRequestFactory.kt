@@ -5,7 +5,7 @@ import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageReposita
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.exceptions.RequestEngagementAlreadyForbiddenException
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
@@ -18,8 +18,7 @@ import org.neptrueworks.xenohermes.domain.social.request.params.*
 
 public abstract class SocialRequestFactory : DomainService {
     protected abstract val blockageRepository: SocialBlockageRepositable;
-    protected abstract val socialRequestRepository: SocialRequestRepositable;
-    protected abstract val engagementRepository: SocialEngagementRepositable;
+    protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable;
     protected abstract val identifierGenerator: SocialRequestIdentifierGenerator;
     
     internal final fun sendRequest(command: SendSocialRequestCommand): SocialRequestAggregateRoot {
@@ -35,7 +34,7 @@ public abstract class SocialRequestFactory : DomainService {
         if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
         
-        val agentEngagement = this.engagementRepository.fetchByIdentifier(engagerAgent);
+        val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);
         if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
         if (agentEngagement.requestEngagementPrivilege.isForbidden())

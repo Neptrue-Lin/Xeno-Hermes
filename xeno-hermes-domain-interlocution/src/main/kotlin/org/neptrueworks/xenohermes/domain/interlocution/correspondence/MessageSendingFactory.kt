@@ -17,14 +17,14 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.MessageScheme
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.isOverlength
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageSendingFactory(
     private val identifierGenerator: MessageIdentifierGeneratable,
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val moderationRepository: InterlocutionModerationRepositable,
 ) : AggregateRootFactory(), DomainService {
     internal final fun sendMessage(command: SendMessageFacadeCommand): MessageCorrespondenceAggregateRoot {
@@ -39,7 +39,7 @@ public abstract class MessageSendingFactory(
         val destinationAgent = InterlocutionModerationAgent(receiver.identifier);
         val participant = InterlocutionParticipant(sender.identifier);
 
-        val senderEngagement = this.engagementRepository.fetchByIdentifier(engagerSender);
+        val senderEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerSender, engageeReceiver);
         if (senderEngagement.checkEngagement(engageeReceiver).isNotEngaged())
             throw MessageReceiverNotEngaged(sender, receiver);
 

@@ -7,7 +7,7 @@ import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageReposita
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementRepositable
+import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isEngaged
@@ -31,7 +31,7 @@ public data class AcceptSocialRequestCommand(
 public final class AcceptSocialRequestCommandHandler(
     private val repository: SocialRequestRepositable,
     private val blockageRepository: SocialBlockageRepositable,
-    private val engagementRepository: SocialEngagementRepositable,
+    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialRequestEvent>
 ) : CommandHandler<AcceptSocialRequestCommand>() {
     public override fun handle(command: AcceptSocialRequestCommand) {
@@ -48,7 +48,7 @@ public final class AcceptSocialRequestCommandHandler(
         if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
 
-        val agentEngagement = this.engagementRepository.fetchByIdentifier(engagerAgent);
+        val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);
         if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
 

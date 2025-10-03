@@ -9,7 +9,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageId
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.*
 import org.neptrueworks.xenohermes.domain.interlocution.forward.commands.ForwardMessageCommand
 import org.neptrueworks.xenohermes.domain.interlocution.forward.exceptions.*
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
@@ -21,7 +21,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageForwardingFactory (
     private val correspondenceRepository: MessageCorrespondenceRepositable,
-    private val moderationBanRepository: InterlocutionModerationBanningRepositable,
+    private val moderationRepository: InterlocutionModerationRepositable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val identifierGenerator: MessageIdentifierGeneratable,
 ) : AggregateRootFactory() {
@@ -67,8 +67,8 @@ public abstract class MessageForwardingFactory (
         val destinationAgent = InterlocutionModerationAgent(destination.identifier);
         val participant = InterlocutionParticipant(forwarder.identifier);
 
-        val moderation = this.moderationBanRepository.fetchByIdentifier(destinationAgent);
-        if (moderation.interlocutionBans[participant].isBanned())
+        val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent, participant);
+        if (moderation.banCatalog[participant].isBanned())
             throw ForwarderBannedException(forwarder, departure);
     }
 

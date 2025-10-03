@@ -1,8 +1,0 @@
-package org.neptrueworks.xenohermes.domain.interlocution.moderation
-
-import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRepositable
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
-
-public interface InterlocutionModerationBanningRepositable : AggregateRepositable<InterlocutionModerationBanningAggregateRoot> {
-    public fun fetchByIdentifier(moderationAgent: InterlocutionModerationAgent): InterlocutionModerationBanningAggregateRoot
-}

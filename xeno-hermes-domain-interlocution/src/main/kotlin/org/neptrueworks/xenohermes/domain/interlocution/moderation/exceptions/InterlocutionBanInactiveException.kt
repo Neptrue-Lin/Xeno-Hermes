@@ -4,7 +4,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerator
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 
-public final class InterlocutionBanNotBannedException internal constructor(
+public final class InterlocutionBanInactiveException internal constructor(
     val moderationAgent: InterlocutionModerationAgent,
     val moderator: InterlocutionModerator,
     val participant: InterlocutionParticipant

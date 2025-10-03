@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(projects.xenoHermesContractCommon)
     implementation(projects.xenoHermesDomainCommon)
+    implementation(projects.xenoHermesDomainSocial)
     implementation(projects.xenoHermesDomainInterlocution)
     implementation(libs.spring.boot.starter)
 //    implementation(libs.spring.boot.starter.data.neo4j)

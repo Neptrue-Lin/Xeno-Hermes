@@ -1,5 +1,0 @@
-package org.neptrueworks.xenohermes.domain.interlocution.moderation
-
-import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateIdentifierGeneratable
-
-public interface InterlocutionModerationIdentifierGenerator: AggregateIdentifierGeneratable<InterlocutionModerationIdentifier>

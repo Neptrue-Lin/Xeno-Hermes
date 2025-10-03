@@ -1,7 +1,6 @@
 package org.neptrueworks.xenohermes.domain.interlocution.correspondence
 
 import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
-import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.commands.SendMessageFacadeCommand
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exceptions.MessageOverlengthException
@@ -11,7 +10,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.Me
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceSender
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageSendDateTime
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageUnsendStatus
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
@@ -25,7 +24,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 public abstract class MessageSendingFactory: AggregateRootFactory() {
     protected abstract val identifierGenerator: MessageIdentifierGeneratable
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
-    protected abstract val moderationBanRepository: InterlocutionModerationBanningRepositable
+    protected abstract val moderationRepository: InterlocutionModerationRepositable
             
     internal final fun sendMessage(command: SendMessageFacadeCommand): MessageCorrespondenceAggregateRoot {
         val sender = command.sender;
@@ -43,8 +42,8 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
         if (senderEngagement.engagementCatalog.checkNonengagement(engageeReceiver).isNotEngaged())
             throw MessageReceiverNotEngaged(sender, receiver);
 
-        val moderation = this.moderationBanRepository.fetchByIdentifier(destinationAgent);
-        if (moderation.interlocutionBans[participant].isBanned())
+        val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent, participant);
+        if (moderation.banCatalog[participant].isBanned())
             throw SenderBannedException(sender, receiver);
             
         if (command.length isOverlength command.scheme.lengthThreshold) 

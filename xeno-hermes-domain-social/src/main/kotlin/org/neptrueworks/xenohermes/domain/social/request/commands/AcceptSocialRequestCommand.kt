@@ -49,7 +49,7 @@ public final class AcceptSocialRequestCommandHandler(
             throw RequestAgentBlockedRequesterException(agent, requester);
 
         val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);
-        if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
+        if (agentEngagement.engagementCatalog.checkNonengagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
 
         socialRequest.acceptSocialRequest(command);

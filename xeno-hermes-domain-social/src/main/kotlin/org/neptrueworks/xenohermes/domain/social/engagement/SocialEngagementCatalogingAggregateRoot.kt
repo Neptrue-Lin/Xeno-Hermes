@@ -10,35 +10,33 @@ public abstract class SocialEngagementCatalogingAggregateRoot : AggregateRoot(),
     public abstract override val engagementThreshold: SocialEngagementThreshold
     public abstract override val requestEngagementPrivilege: SocialRequestEngagementPrivilege
     public abstract override val invitationEngagementPrivilege: SocialInvitationEngagementPrivilege
-    protected abstract val engagementCatalog: SocialEngagementCatalog
+    protected abstract val engagementCataloging: SocialEngagementCatalog
+    public final val engagementCatalog: SocialEngagementCatalogable = this.engagementCataloging
     
-    public final fun checkEngagement(engagee: SocialEngagementEngagee) =
-        this.engagementCatalog.checkEngagement(engagee)
-
     internal final fun establishEngagement(command: EstablishEngagementCommand) {
-        val engagement = this.engagementCatalog.checkEngagement(command.engagee);
-        if (engagement.isEngaged()) 
+        val nonengagement = this.engagementCataloging.checkNonengagement(command.engagee);
+        if (nonengagement.isEngaged()) 
             throw EngageeAlreadyEngagedException(command.engager, command.engagee);
         
-        engagement as SocialEngagement.NotEngaged;
-        if (engagement.isEngagerMaximumEngagementExceeds())
+        nonengagement as SocialNonengagement.NotEngaged;
+        if (nonengagement.isEngagerMaximumEngagementExceeds())
             throw EngagerEngagementThresholdExceededException(command.engager, this.engagementThreshold);
-        if (engagement.isEngageeMaximumEngagementExceeds())
-            throw EngageeEngagementThresholdExceededException(command.engagee, engagement.engageeEngagementThreshold);
+        if (nonengagement.isEngageeMaximumEngagementExceeds())
+            throw EngageeEngagementThresholdExceededException(command.engagee, nonengagement.engageeEngagementThreshold);
 
-        this.engagementCatalog.engage(command.engager, command.engagee);
+        this.engagementCataloging.engage(command.engager, command.engagee);
     }
 
     internal final fun dissolveEngagement(command: DissolveEngagementCommand) {
-        val engagement = this.engagementCatalog.checkEngagement(command.disengagee);
-        if (engagement.isNotEngaged())
+        val nonengagement = this.engagementCataloging.checkNonengagement(command.disengagee);
+        if (nonengagement.isNotEngaged())
             throw DisengageeNotEngagedException(command.disengager);
 
-        this.engagementCatalog.disengage(command.disengager, command.disengagee);
+        this.engagementCataloging.disengage(command.disengager, command.disengagee);
     }
 
-    private final inline fun SocialEngagement.NotEngaged.isEngagerMaximumEngagementExceeds() =
+    private final inline fun SocialNonengagement.NotEngaged.isEngagerMaximumEngagementExceeds() =
         engagementThreshold.isMaximumEngagementExceeds(this.engagerEngagementCount)
-    private final inline fun SocialEngagement.NotEngaged.isEngageeMaximumEngagementExceeds() =
+    private final inline fun SocialNonengagement.NotEngaged.isEngageeMaximumEngagementExceeds() =
         this.engageeEngagementThreshold.isMaximumEngagementExceeds(this.engageeEngagementCount)
 }

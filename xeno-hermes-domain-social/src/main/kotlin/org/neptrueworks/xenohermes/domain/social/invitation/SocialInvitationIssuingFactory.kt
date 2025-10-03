@@ -19,7 +19,8 @@ public abstract class SocialInvitationFactory : DomainService {
     internal final fun issueInvitation(command: IssueSocialInvitationCommand): SocialInvitationAggregateRoot {
         val engagerAgent = SocialEngagementEngager(command.agent.identifier);
         val engageeAudience = SocialEngagementEngagee(command.audience.identifier);
-        val agentEngagement: SocialEngagementCatalogingAggregateRoot = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeAudience);
+        
+        val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeAudience);
         if (agentEngagement.invitationEngagementPrivilege.isForbidden())
             throw InvitationEngagementAlreadyForbiddenException(engagerAgent);
         

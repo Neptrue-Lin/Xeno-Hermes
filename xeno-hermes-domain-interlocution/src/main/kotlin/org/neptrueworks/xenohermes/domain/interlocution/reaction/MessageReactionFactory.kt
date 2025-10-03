@@ -32,7 +32,7 @@ public abstract class MessageReactionFactory(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
         val agentToReactor = this.engagementCatalogRepository.fetchByIdentifier(engagerReactor, engageeAgent);
-        if (agentToReactor.checkEngagement(engageeAgent).isNotEngaged())
+        if (agentToReactor.engagementCatalog.checkNonengagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
 
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

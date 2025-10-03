@@ -44,7 +44,7 @@ public final class UnreactMessageCommandHandler(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
         
         val unreactorEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerUnreactor, engageeAgent);
-        if (unreactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
+        if (unreactorEngagement.engagementCatalog.checkNonengagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(unreactor, agent);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

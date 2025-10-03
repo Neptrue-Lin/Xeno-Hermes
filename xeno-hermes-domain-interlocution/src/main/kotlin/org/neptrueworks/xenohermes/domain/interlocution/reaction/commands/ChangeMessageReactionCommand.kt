@@ -43,7 +43,7 @@ public final class ChangeMessageReactionCommandHandler(
         val engageeAgent = SocialEngagementEngagee(agent.identifier);
 
         val reactorEngagement = this.engagementRepositable.fetchByIdentifier(engagerReactor, engageeAgent);
-        if (reactorEngagement.checkEngagement(engageeAgent).isNotEngaged())
+        if (reactorEngagement.engagementCatalog.checkNonengagement(engageeAgent).isNotEngaged())
             throw ReactionAgentNotEngagedException(reactor, agent);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(conversationId, messageId);

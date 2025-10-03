@@ -36,7 +36,7 @@ public final class UnsendMessageCommandHandler(
         val engageeReceiver = SocialEngagementEngagee(command.unsender.identifier);
         
         val engagement = this.engagementCatalogRepository.fetchByIdentifier(engagerUnsender, engageeReceiver);
-        if (engagement.checkEngagement(engageeReceiver).isNotEngaged())
+        if (engagement.engagementCatalog.checkNonengagement(engageeReceiver).isNotEngaged())
             throw ReceiverNotEngagedException(command.unsender, command.receiver);
         
         val correspondence = this.correspondenceRepository.fetchByIdentifier(command.conversationId, command.messageId);

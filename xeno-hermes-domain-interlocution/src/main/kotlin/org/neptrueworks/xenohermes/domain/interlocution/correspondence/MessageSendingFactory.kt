@@ -40,7 +40,7 @@ public abstract class MessageSendingFactory(
         val participant = InterlocutionParticipant(sender.identifier);
 
         val senderEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerSender, engageeReceiver);
-        if (senderEngagement.checkEngagement(engageeReceiver).isNotEngaged())
+        if (senderEngagement.engagementCatalog.checkNonengagement(engageeReceiver).isNotEngaged())
             throw MessageReceiverNotEngaged(sender, receiver);
 
         val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent);

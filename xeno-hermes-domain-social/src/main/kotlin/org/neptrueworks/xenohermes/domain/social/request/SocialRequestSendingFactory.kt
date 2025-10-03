@@ -35,7 +35,7 @@ public abstract class SocialRequestFactory : DomainService {
             throw RequestAgentBlockedRequesterException(agent, requester);
         
         val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);
-        if (agentEngagement.checkEngagement(engageeRequester).isEngaged())
+        if (agentEngagement.engagementCatalog.checkNonengagement(engageeRequester).isEngaged())
             throw RequestAgentAlreadyEngagedException(agent, requester);
         if (agentEngagement.requestEngagementPrivilege.isForbidden())
             throw RequestEngagementAlreadyForbiddenException(engagerAgent);

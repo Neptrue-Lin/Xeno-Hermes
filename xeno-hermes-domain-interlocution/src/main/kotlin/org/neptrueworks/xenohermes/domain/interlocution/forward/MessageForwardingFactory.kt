@@ -54,9 +54,9 @@ public abstract class MessageForwardingFactory (
         val engageeDestination = SocialEngagementEngagee(destination.identifier);
 
         val forwarderEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerForwarder, engageeDeparture);
-        if (forwarderEngagement.checkEngagement(engageeDeparture).isNotEngaged())
+        if (forwarderEngagement.engagementCatalog.checkNonengagement(engageeDeparture).isNotEngaged())
             throw ForwardDepartureNotEngagedException(forwarder, departure);
-        if (forwarderEngagement.checkEngagement(engageeDestination).isNotEngaged())
+        if (forwarderEngagement.engagementCatalog.checkNonengagement(engageeDestination).isNotEngaged())
             throw ForwardDestinationNotEngagedException(forwarder, destination);
     }
 

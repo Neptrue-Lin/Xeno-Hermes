@@ -8,7 +8,7 @@ import org.neptrueworks.xenohermes.domain.social.request.exceptions.*
 import org.neptrueworks.xenohermes.domain.social.request.params.*
 import java.time.LocalDateTime
 
-public abstract class SocialRequestAggregateRoot : AggregateRoot(), SocialRequestAggregatable {
+public abstract class SocialRequestResponseAggregateRoot : AggregateRoot(), SocialRequestAggregatable {
     public abstract override val requestId: SocialRequestIdentifier
     public abstract override val requester: SocialRequestRequester
     public abstract override val agent: SocialRequestAgent
@@ -54,13 +54,3 @@ public abstract class SocialRequestAggregateRoot : AggregateRoot(), SocialReques
         this.responseStatus = SocialResponseStatus.REJECTED;
     }
 }
-
-public inline fun SocialRequestAggregateRoot.isPendingWhen(currentDateTime: LocalDateTime) =
-       this.expiryPeriod.isUnexpiredWhen(currentDateTime)
-    && this.revocationStatus.isEnduring()
-    && this.responseStatus.isNotResponded()
-
-public inline fun SocialRequestAggregateRoot.isNotPendingWhen(currentDateTime: LocalDateTime) =
-       this.expiryPeriod.isExpiredWhen(currentDateTime)
-    || this.revocationStatus.isRevoked()
-    || this.responseStatus.isResponded()

@@ -3,7 +3,7 @@ package org.neptrueworks.xenohermes.domain.social.request.commands
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.request.SocialRequestIdentifier
-import org.neptrueworks.xenohermes.domain.social.request.SocialRequestRepositable
+import org.neptrueworks.xenohermes.domain.social.request.SocialRequestResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestEvent
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestRejectedEvent
 import org.neptrueworks.xenohermes.domain.social.request.params.SocialRequestRejectionDateTime
@@ -18,7 +18,7 @@ public data class RejectSocialRequestCommand(
 
 @Service
 public final class RejectSocialRequestCommandHandler(
-    private val repository: SocialRequestRepositable,
+    private val repository: SocialRequestResponseRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialRequestEvent>
 ) : CommandHandler<RejectSocialRequestCommand>() {
     public override fun handle(command: RejectSocialRequestCommand) {

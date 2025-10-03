@@ -2,8 +2,9 @@ package org.neptrueworks.xenohermes.domain.social.request.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.request.SocialRequestFactory
-import org.neptrueworks.xenohermes.domain.social.request.SocialRequestRepositable
+import org.neptrueworks.xenohermes.domain.social.request.SocialRequestSendingFactory
+import org.neptrueworks.xenohermes.domain.social.request.SocialRequestResponseRepositable
+import org.neptrueworks.xenohermes.domain.social.request.SocialRequestSendingRepositable
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestEvent
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestSentEvent
 import org.neptrueworks.xenohermes.domain.social.request.params.SocialRequestAgent
@@ -22,8 +23,8 @@ public data class SendSocialRequestCommand(
 
 @Service
 public final class SendSocialRequestCommandHandler(
-    private val repository: SocialRequestRepositable,
-    private val factory: SocialRequestFactory,
+    private val repository: SocialRequestSendingRepositable,
+    private val factory: SocialRequestSendingFactory,
     private val eventTrigger: DomainEventRaiseable<SocialRequestEvent>
 ) : CommandHandler<SendSocialRequestCommand>() {
     public override fun handle(command: SendSocialRequestCommand) {

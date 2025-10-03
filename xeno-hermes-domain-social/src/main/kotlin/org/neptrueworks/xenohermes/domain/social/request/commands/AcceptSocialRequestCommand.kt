@@ -11,7 +11,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isEngaged
 import org.neptrueworks.xenohermes.domain.social.request.SocialRequestIdentifier
-import org.neptrueworks.xenohermes.domain.social.request.SocialRequestRepositable
+import org.neptrueworks.xenohermes.domain.social.request.SocialRequestResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestAcceptedEvent
 import org.neptrueworks.xenohermes.domain.social.request.events.SocialRequestEvent
 import org.neptrueworks.xenohermes.domain.social.request.exceptions.RequestAgentAlreadyEngagedException
@@ -28,7 +28,7 @@ public data class AcceptSocialRequestCommand(
 
 @Service
 public final class AcceptSocialRequestCommandHandler(
-    private val repository: SocialRequestRepositable,
+    private val repository: SocialRequestResponseRepositable,
     private val blockageCatalogRepository: SocialBlockageCatalogingRepositable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialRequestEvent>

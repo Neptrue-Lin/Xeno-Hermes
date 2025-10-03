@@ -1,7 +1,7 @@
 package org.neptrueworks.xenohermes.domain.social.request
 
-import org.neptrueworks.xenohermes.domain.common.models.DomainService
-import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
+import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
@@ -16,12 +16,12 @@ import org.neptrueworks.xenohermes.domain.social.request.exceptions.RequestAgent
 import org.neptrueworks.xenohermes.domain.social.request.exceptions.RequestAgentBlockedRequesterException
 import org.neptrueworks.xenohermes.domain.social.request.params.*
 
-public abstract class SocialRequestFactory : DomainService {
+public abstract class SocialRequestSendingFactory : AggregateRootFactory() {
     protected abstract val blockageCatalogRepository: SocialBlockageCatalogingRepositable;
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable;
     protected abstract val identifierGenerator: SocialRequestIdentifierGenerator;
     
-    internal final fun sendRequest(command: SendSocialRequestCommand): SocialRequestAggregateRoot {
+    internal final fun sendRequest(command: SendSocialRequestCommand): SocialRequestSendingAggregateRoot {
         val agent = command.agent;
         val requester = command.requester;
         
@@ -61,5 +61,5 @@ public abstract class SocialRequestFactory : DomainService {
         responseStatus: SocialResponseStatus,
         responsePrivilege: SocialResponsePrivilege,
         expiryPeriod: SocialRequestExpiryPeriod,
-    ): SocialRequestAggregateRoot;
+    ): SocialRequestSendingAggregateRoot;
 }

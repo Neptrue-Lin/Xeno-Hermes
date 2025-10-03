@@ -17,7 +17,7 @@ import org.neptrueworks.xenohermes.domain.social.request.exceptions.RequestAgent
 import org.neptrueworks.xenohermes.domain.social.request.params.*
 
 public abstract class SocialRequestFactory : DomainService {
-    protected abstract val blockageRepository: SocialBlockageRepositable;
+    protected abstract val blockageCatalogRepository: SocialBlockageCatalogingRepositable;
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable;
     protected abstract val identifierGenerator: SocialRequestIdentifierGenerator;
     
@@ -30,7 +30,7 @@ public abstract class SocialRequestFactory : DomainService {
         val engagerAgent = SocialEngagementEngager(agent.identifier);
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
 
-        val agentBlockage = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
+        val agentBlockage = this.blockageCatalogRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
         if (agentBlockage.blockageCatalog.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
         

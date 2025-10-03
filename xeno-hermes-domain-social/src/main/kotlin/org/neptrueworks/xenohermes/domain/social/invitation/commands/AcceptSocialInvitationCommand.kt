@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.invitation.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
+import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.isBlocked
@@ -29,7 +29,7 @@ public data class AcceptSocialInvitationCommand(
 @Service
 public final class AcceptSocialInvitationCommandHandler(
     private val invitationRepository: SocialInvitationRepositable,
-    private val blockageRepository: SocialBlockageRepositable,
+    private val blockageCatalogRepository: SocialBlockageCatalogingRepositable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialInvitationEvent>
 ) : CommandHandler<AcceptSocialInvitationCommand>() {
@@ -46,7 +46,7 @@ public final class AcceptSocialInvitationCommandHandler(
         
         
         
-        val blockage = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeAccepter);
+        val blockage = this.blockageCatalogRepository.fetchByIdentifier(blockerAgent, blockeeAccepter);
         if (blockage.blockageCatalog.checkBlockage(blockeeAccepter).isBlocked())
             throw InvitationAgentBlockedAccepter(agent, accepter);
 

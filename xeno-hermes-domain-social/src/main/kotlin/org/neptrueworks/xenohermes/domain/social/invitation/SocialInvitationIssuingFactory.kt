@@ -14,7 +14,7 @@ import org.neptrueworks.xenohermes.domain.social.invitation.params.*
 public abstract class SocialInvitationFactory : DomainService {
     protected abstract val identifierGenerator: SocialInvitationIdentifierGenerator;
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable;
-    protected abstract val blockageRepository: SocialBlockageRepositable;
+    protected abstract val blockageCatalogRepository: SocialBlockageCatalogingRepositable;
     
     internal final fun issueInvitation(command: IssueSocialInvitationCommand): SocialInvitationAggregateRoot {
         val engagerAgent = SocialEngagementEngager(command.agent.identifier);
@@ -24,7 +24,7 @@ public abstract class SocialInvitationFactory : DomainService {
         if (agentEngagement.invitationEngagementPrivilege.isForbidden())
             throw InvitationEngagementAlreadyForbiddenException(engagerAgent);
         
-//        val blockage = this.blockageRepository.fetchByAudiences(agent, audiences);
+//        val blockage = this.blockageCatalogRepository.fetchByAudiences(agent, audiences);
 //        audiences.forEach { audience ->
 //            if (blockage.blockageList.isBlocked(audience))
 //                throw AudienceBlockedByAgentException(agent, audience);

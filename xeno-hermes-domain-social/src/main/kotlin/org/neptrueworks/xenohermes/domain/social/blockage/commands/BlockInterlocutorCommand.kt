@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.blockage.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
+import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorBlockedEvent
 import org.neptrueworks.xenohermes.domain.social.blockage.events.SocialBlockageEvent
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageDateTime
@@ -20,7 +20,7 @@ public data class BlockInterlocutorCommand(
 
 @Service
 public final class BlockInterlocutorCommandHandler(
-    private val repository: SocialBlockageRepositable,
+    private val repository: SocialBlockageCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialBlockageEvent>
 ) : CommandHandler<BlockInterlocutorCommand>() {
     public override fun handle(command: BlockInterlocutorCommand) {

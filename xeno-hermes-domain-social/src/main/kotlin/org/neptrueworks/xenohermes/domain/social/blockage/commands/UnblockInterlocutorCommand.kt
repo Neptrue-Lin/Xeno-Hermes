@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.blockage.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
+import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorUnblockedEvent
 import org.neptrueworks.xenohermes.domain.social.blockage.events.SocialBlockageEvent
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
@@ -16,7 +16,7 @@ public data class UnblockInterlocutorCommand(
 
 @Service
 public final class UnblockInterlocutorCommandHandler(
-    private val repository: SocialBlockageRepositable,
+    private val repository: SocialBlockageCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialBlockageEvent>
 ) : CommandHandler<UnblockInterlocutorCommand>() {
     public override fun handle(command: UnblockInterlocutorCommand) {

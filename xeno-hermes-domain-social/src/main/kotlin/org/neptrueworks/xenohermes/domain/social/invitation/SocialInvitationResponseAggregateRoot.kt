@@ -7,7 +7,7 @@ import org.neptrueworks.xenohermes.domain.social.invitation.exceptions.*
 import org.neptrueworks.xenohermes.domain.social.invitation.params.*
 import java.time.LocalDateTime
 
-public abstract class SocialInvitationAggregateRoot: AggregateRoot(), SocialInvitationAggregatable {
+public abstract class SocialInvitationResponseAggregateRoot: AggregateRoot(), SocialInvitationAggregatable {
     public abstract override val invitationId: SocialInvitationIdentifier
     public abstract override val issuer: SocialInvitationIssuer
     public abstract override val agent: SocialInvitationAgent
@@ -17,12 +17,12 @@ public abstract class SocialInvitationAggregateRoot: AggregateRoot(), SocialInvi
     public abstract override var revocationStatus: SocialInvitationRevocationStatus protected set
     public abstract override var acceptanceStatus: SocialInvitationAcceptanceStatus protected set
     public abstract override val issueDateTime: SocialInvitationIssueDateTime
-//    public abstract override val revocationPrivilege: SocialInvitationRevocationPrivilege
-//    public abstract override val invocationPrivilege: SocialInvitationInvocationPrivilege
+    public abstract val revocationPrivilege: SocialInvitationRevocationPrivilege
+    public abstract val invocationPrivilege: SocialInvitationInvocationPrivilege
         
     internal final fun acceptSocialInvitation(command: AcceptSocialInvitationCommand) {
-//        if (this.invocationPrivilege.isForbidden())
-//            throw SocialInvitationAcceptanceForbiddenException(command.invitationId, command.accepter, this.agent);
+        if (this.invocationPrivilege.isForbidden())
+            throw SocialInvitationAcceptanceForbiddenException(command.invitationId, command.accepter, this.agent);
         if (this.expiryPeriod.isExpired(command.acceptanceDateTime.invokedAt))
             throw SocialInvitationExpiredException(command.invitationId, this.agent, this.expiryPeriod);
         if (this.activePeriod.isActivated(command.acceptanceDateTime.invokedAt))
@@ -40,8 +40,8 @@ public abstract class SocialInvitationAggregateRoot: AggregateRoot(), SocialInvi
     }
     
     internal final fun revokeSocialInvitation(command: RevokeSocialInvitationCommand) {
-//        if (this.revocationPrivilege.isForbidden())
-//            throw SocialInvitationRevocationForbiddenException(command.invitationId, command.revoker, this.agent);
+        if (this.revocationPrivilege.isForbidden())
+            throw SocialInvitationRevocationForbiddenException(command.invitationId, command.revoker, this.agent);
         if (this.expiryPeriod.isExpired(command.revocationDateTime.revokedAt))
             throw SocialInvitationExpiredException(command.invitationId, this.agent, this.expiryPeriod);
         if (this.revocationStatus.isRevoked())
@@ -50,14 +50,3 @@ public abstract class SocialInvitationAggregateRoot: AggregateRoot(), SocialInvi
         this.revocationStatus = SocialInvitationRevocationStatus.REVOKED;
     }
 }
-
-
-public inline fun SocialInvitationAggregateRoot.isValid(currentDateTime: LocalDateTime) =
-        this.activePeriod.isActivated(currentDateTime)
-     && this.expiryPeriod.isUnexpired(currentDateTime)
-     && this.revocationStatus.isEnduring()
-
-public inline fun SocialInvitationAggregateRoot.isInvalid(currentDateTime: LocalDateTime) =
-        this.activePeriod.isNotActivated(currentDateTime)
-     || this.expiryPeriod.isExpired(currentDateTime)
-     || this.revocationStatus.isRevoked()

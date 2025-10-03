@@ -1,8 +1,7 @@
 package org.neptrueworks.xenohermes.domain.social.invitation
 
-import org.neptrueworks.xenohermes.domain.common.models.DomainService
-import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageRepositable
-import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingAggregateRoot
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
+import org.neptrueworks.xenohermes.domain.social.blockage.SocialBlockageCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.exceptions.InvitationEngagementAlreadyForbiddenException
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
@@ -11,12 +10,12 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isForbidden
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.IssueSocialInvitationCommand
 import org.neptrueworks.xenohermes.domain.social.invitation.params.*
 
-public abstract class SocialInvitationFactory : DomainService {
+public abstract class SocialInvitationIssuingFactory : AggregateRootFactory() {
     protected abstract val identifierGenerator: SocialInvitationIdentifierGenerator;
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable;
     protected abstract val blockageCatalogRepository: SocialBlockageCatalogingRepositable;
     
-    internal final fun issueInvitation(command: IssueSocialInvitationCommand): SocialInvitationAggregateRoot {
+    internal final fun issueInvitation(command: IssueSocialInvitationCommand): SocialInvitationIssuingAggregateRoot {
         val engagerAgent = SocialEngagementEngager(command.agent.identifier);
         val engageeAudience = SocialEngagementEngagee(command.audience.identifier);
         
@@ -51,5 +50,5 @@ public abstract class SocialInvitationFactory : DomainService {
         expiryPeriod: SocialInvitationExpiryPeriod,
         revocationStatus: SocialInvitationRevocationStatus,
         acceptanceStatus: SocialInvitationAcceptanceStatus,
-    ): SocialInvitationAggregateRoot;
+    ): SocialInvitationIssuingAggregateRoot;
 }

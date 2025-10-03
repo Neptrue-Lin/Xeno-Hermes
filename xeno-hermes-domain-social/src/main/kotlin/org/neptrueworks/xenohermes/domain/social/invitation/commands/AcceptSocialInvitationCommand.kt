@@ -12,7 +12,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isForbidden
 import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationIdentifier
-import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationRepositable
+import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.invitation.events.SocialInvitationEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.events.SocialInvitationAcceptedEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.exceptions.InvitationAgentBlockedAccepter
@@ -28,7 +28,7 @@ public data class AcceptSocialInvitationCommand(
 
 @Service
 public final class AcceptSocialInvitationCommandHandler(
-    private val invitationRepository: SocialInvitationRepositable,
+    private val invitationRepository: SocialInvitationResponseRepositable,
     private val blockageCatalogRepository: SocialBlockageCatalogingRepositable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialInvitationEvent>

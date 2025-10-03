@@ -3,7 +3,7 @@ package org.neptrueworks.xenohermes.domain.social.invitation.policies
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorBlockedEvent
-import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationRepositable
+import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommand
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommandHandler
 import org.neptrueworks.xenohermes.domain.social.invitation.events.BlockedSocialInvitationRevokedEvent
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Service
 @Service
 public final class BlockedSocialInvitationRevocationPolicy(
     private val commandHandler: RevokeSocialInvitationCommandHandler,
-    private val invitationRepository: SocialInvitationRepositable,
+    private val invitationResponseRepository: SocialInvitationResponseRepositable,
     private val eventTrigger: DomainEventRaiseable<BlockedSocialInvitationRevokedEvent>
 ) : DomainEventHandler<InterlocutorBlockedEvent>() {
     public override fun handle(event: InterlocutorBlockedEvent) {
         val issuer = SocialInvitationIssuer(event.blocker.identifier);
         val invitee = SocialInvitationAudience(event.blockee.identifier);
         
-        val invitation = this.invitationRepository.fetchPrevious(issuer, invitee);
+        val invitation = this.invitationResponseRepository.fetchPrevious(issuer, invitee);
         if (invitation.isInvalid(event.blockageDateTime.blockedAt))
             return; // TODO: Result ?
 

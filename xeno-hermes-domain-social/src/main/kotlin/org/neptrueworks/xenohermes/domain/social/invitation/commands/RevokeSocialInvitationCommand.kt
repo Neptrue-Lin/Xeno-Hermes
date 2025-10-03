@@ -3,7 +3,7 @@ package org.neptrueworks.xenohermes.domain.social.invitation.commands
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationIdentifier
-import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationRepositable
+import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.invitation.events.SocialInvitationEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.events.SocialInvitationRevokedEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.params.SocialInvitationRevocationDateTime
@@ -18,7 +18,7 @@ public data class RevokeSocialInvitationCommand(
 
 @Service
 public final class RevokeSocialInvitationCommandHandler(
-    private val repository: SocialInvitationRepositable,
+    private val repository: SocialInvitationResponseRepositable,
     private val eventTrigger: DomainEventRaiseable<SocialInvitationEvent>
 ) : CommandHandler<RevokeSocialInvitationCommand>() {
     public override fun handle(command: RevokeSocialInvitationCommand) {

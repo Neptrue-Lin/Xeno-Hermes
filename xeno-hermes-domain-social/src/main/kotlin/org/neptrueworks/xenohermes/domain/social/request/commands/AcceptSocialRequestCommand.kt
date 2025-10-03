@@ -44,8 +44,8 @@ public final class AcceptSocialRequestCommandHandler(
         val engagerAgent = SocialEngagementEngager(agent.identifier);
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
     
-        val agentBlockage: SocialBlockageAggregateRoot = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
-        if (agentBlockage.checkBlockage(blockeeRequester).isBlocked())
+        val agentBlockage = this.blockageRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
+        if (agentBlockage.blockageCatalog.checkBlockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
 
         val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);

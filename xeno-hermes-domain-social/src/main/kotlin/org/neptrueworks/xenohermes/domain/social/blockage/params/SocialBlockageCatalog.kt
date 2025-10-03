@@ -1,7 +1,7 @@
 package org.neptrueworks.xenohermes.domain.social.blockage.params
 
 public sealed interface SocialBlockageCatalogable {
-    public abstract fun checkBlockage(blockee: SocialBlockageBlockee): SocialBlockage;
+    public abstract fun checkNonblockage(blockee: SocialBlockageBlockee): SocialNonblockage;
 }
 
 public abstract class SocialBlockageCatalog: SocialBlockageCatalogable {

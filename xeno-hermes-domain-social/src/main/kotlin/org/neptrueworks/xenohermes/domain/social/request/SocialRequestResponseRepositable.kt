@@ -6,5 +6,5 @@ import org.neptrueworks.xenohermes.domain.social.request.params.SocialRequestReq
 
 public interface SocialRequestResponseRepositable : AggregateRepositable<SocialRequestResponseAggregateRoot> {
     public fun fetchByIdentifier(socialRequestId: SocialRequestIdentifier): SocialRequestResponseAggregateRoot
-    public fun fetchPrevious(requester: SocialRequestRequester, agent: SocialRequestAgent): SocialRequestResponseAggregateRoot
+    public fun fetchPrevious(requester: SocialRequestRequester, agent: SocialRequestAgent): SocialRequestAggregatable
 }

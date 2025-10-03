@@ -30,8 +30,8 @@ public abstract class SocialRequestSendingFactory : AggregateRootFactory() {
         val engagerAgent = SocialEngagementEngager(agent.identifier);
         val engageeRequester = SocialEngagementEngagee(requester.identifier);
 
-        val agentBlockage = this.blockageCatalogRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
-        if (agentBlockage.blockageCatalog.checkBlockage(blockeeRequester).isBlocked())
+        val agentNonblockage = this.blockageCatalogRepository.fetchByIdentifier(blockerAgent, blockeeRequester);
+        if (agentNonblockage.blockageCatalog.checkNonblockage(blockeeRequester).isBlocked())
             throw RequestAgentBlockedRequesterException(agent, requester);
         
         val agentEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerAgent, engageeRequester);

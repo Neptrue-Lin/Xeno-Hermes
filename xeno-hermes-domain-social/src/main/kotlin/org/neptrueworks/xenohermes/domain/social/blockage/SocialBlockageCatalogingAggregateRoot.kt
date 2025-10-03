@@ -6,8 +6,7 @@ import org.neptrueworks.xenohermes.domain.social.blockage.commands.UnblockInterl
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockageThresholdExceededException
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockeeNotBlockedException
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockerAlreadyBlockedException
-import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockage
-import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlockee
+import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialNonblockage
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageBlocker
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageCatalog
 import org.neptrueworks.xenohermes.domain.social.blockage.params.SocialBlockageCatalogable
@@ -23,20 +22,20 @@ public abstract class SocialBlockageCatalogingAggregateRoot: AggregateRoot(), So
     public final val blockageCatalog: SocialBlockageCatalogable = this.blockageCataloging;
     
     internal final fun blockInterlocutor(command: BlockInterlocutorCommand) {
-        val blockage = this.blockageCataloging.checkBlockage(command.blockee);
-        if (blockage.isBlocked())
+        val nonblockage = this.blockageCataloging.checkNonblockage(command.blockee);
+        if (nonblockage.isBlocked())
             throw BlockerAlreadyBlockedException(command.blocker, command.blockee);
         
-        blockage as SocialBlockage.NotBlocked;
-        if (this.blockageThreshold.isMaximumBlockageExceeds(blockage.blockageCount))
+        nonblockage as SocialNonblockage.NotBlocked;
+        if (this.blockageThreshold.isMaximumBlockageExceeds(nonblockage.blockageCount))
             throw BlockageThresholdExceededException(command.blocker, command.blockee);
         
         this.blockageCataloging.block(command.blocker, command.blockee);
     }
     
     internal final fun unblockInterlocutor(command: UnblockInterlocutorCommand) {
-        val blockage = this.blockageCataloging.checkBlockage(command.unblockee);
-        if (blockage.isNotBlocked())
+        val nonblockage = this.blockageCataloging.checkNonblockage(command.unblockee);
+        if (nonblockage.isNotBlocked())
             throw BlockeeNotBlockedException(command.unblocker, command.unblockee);
         
         this.blockageCataloging.unblock(command.unblocker, command.unblockee);

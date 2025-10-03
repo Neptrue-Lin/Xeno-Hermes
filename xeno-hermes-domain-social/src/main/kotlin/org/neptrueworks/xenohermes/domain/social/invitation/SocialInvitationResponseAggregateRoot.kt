@@ -17,12 +17,12 @@ public abstract class SocialInvitationResponseAggregateRoot: AggregateRoot(), So
     public abstract override var revocationStatus: SocialInvitationRevocationStatus protected set
     public abstract override var acceptanceStatus: SocialInvitationAcceptanceStatus protected set
     public abstract override val issueDateTime: SocialInvitationIssueDateTime
-    public abstract val revocationPrivilege: SocialInvitationRevocationPrivilege
-    public abstract val invocationPrivilege: SocialInvitationInvocationPrivilege
+//    public abstract val revocationPrivilege: SocialInvitationRevocationPrivilege
+//    public abstract val invocationPrivilege: SocialInvitationInvocationPrivilege
         
     internal final fun acceptSocialInvitation(command: AcceptSocialInvitationCommand) {
-        if (this.invocationPrivilege.isForbidden())
-            throw SocialInvitationAcceptanceForbiddenException(command.invitationId, command.accepter, this.agent);
+//        if (this.invocationPrivilege.isForbidden())
+//            throw SocialInvitationAcceptanceForbiddenException(command.invitationId, command.accepter, this.agent);
         if (this.expiryPeriod.isExpired(command.acceptanceDateTime.invokedAt))
             throw SocialInvitationExpiredException(command.invitationId, this.agent, this.expiryPeriod);
         if (this.activePeriod.isActivated(command.acceptanceDateTime.invokedAt))
@@ -40,8 +40,8 @@ public abstract class SocialInvitationResponseAggregateRoot: AggregateRoot(), So
     }
     
     internal final fun revokeSocialInvitation(command: RevokeSocialInvitationCommand) {
-        if (this.revocationPrivilege.isForbidden())
-            throw SocialInvitationRevocationForbiddenException(command.invitationId, command.revoker, this.agent);
+//        if (this.revocationPrivilege.isForbidden())
+//            throw SocialInvitationRevocationForbiddenException(command.invitationId, command.revoker, this.agent);
         if (this.expiryPeriod.isExpired(command.revocationDateTime.revokedAt))
             throw SocialInvitationExpiredException(command.invitationId, this.agent, this.expiryPeriod);
         if (this.revocationStatus.isRevoked())

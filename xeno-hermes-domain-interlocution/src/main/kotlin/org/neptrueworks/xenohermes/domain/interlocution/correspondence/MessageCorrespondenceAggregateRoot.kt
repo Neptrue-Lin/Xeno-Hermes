@@ -17,6 +17,7 @@ public abstract class MessageCorrespondenceAggregateRoot : AggregateRoot(), Mess
     public abstract override val conversationId: ConversationIdentifier
     public abstract override val sender: MessageCorrespondenceSender
     public abstract override val receiver: MessageCorrespondenceReceiver
+    public abstract override val forward: MessageForward
     public abstract override val scheme: MessageScheme
     public abstract override var unsendStatus: MessageUnsendStatus protected set
     public abstract override val sendDateTime: MessageSendDateTime

@@ -22,11 +22,11 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
-public abstract class MessageSendingFactory(
-    private val identifierGenerator: MessageIdentifierGeneratable,
-    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
-    private val moderationBanRepository: InterlocutionModerationBanningRepositable,
-) : AggregateRootFactory(), DomainService {
+public abstract class MessageSendingFactory: AggregateRootFactory() {
+    protected abstract val identifierGenerator: MessageIdentifierGeneratable
+    protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
+    protected abstract val moderationBanRepository: InterlocutionModerationBanningRepositable
+            
     internal final fun sendMessage(command: SendMessageFacadeCommand): MessageCorrespondenceAggregateRoot {
         val sender = command.sender;
         val receiver = command.receiver;

@@ -1,5 +1,6 @@
 package org.neptrueworks.xenohermes.domain.social.engagement
 
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
 import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.social.engagement.commands.FrameSocialEngagementCommand
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
@@ -7,7 +8,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialInvitationEngagementPrivilege
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialRequestEngagementPrivilege
 
-public abstract class SocialEngagementFactory : DomainService {
+public abstract class SocialEngagementFramingFactory : AggregateRootFactory() {
     internal final fun frameEngagement(command: FrameSocialEngagementCommand): SocialEngagementFramingAggregateRoot {
         return produceSocialEngagement(
             engager = command.engager,

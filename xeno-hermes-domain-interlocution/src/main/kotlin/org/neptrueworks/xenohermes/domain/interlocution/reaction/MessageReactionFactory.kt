@@ -1,7 +1,6 @@
 package org.neptrueworks.xenohermes.domain.interlocution.reaction
 
 import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
-import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifier
@@ -21,7 +20,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 public abstract class MessageReactionFactory(
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val correspondenceRepository: MessageCorrespondenceRepositable,
-) : AggregateRootFactory(), DomainService {
+) : AggregateRootFactory() {
     internal final fun reactMessage(command: ReactMessageCommand): MessageReactionAggregateRoot {
         val agent = command.agent;
         val reactor = command.reactor;

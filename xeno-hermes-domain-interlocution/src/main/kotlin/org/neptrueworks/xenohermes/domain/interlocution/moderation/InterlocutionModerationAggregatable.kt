@@ -8,9 +8,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 
 public interface InterlocutionModerationAggregatable : Aggregatable {
     val moderationAgent: InterlocutionModerationAgent
-//    val moderator: InterlocutionModerator
     val interlocutionBans: InterlocutionBanManifest
     val contentRestriction: InterlocutionContentRestriction
     val behaviorRestriction: InterlocutionBehaviorRestriction
-//    val banPrivilege: InterlocutionBanPrivilege
 }

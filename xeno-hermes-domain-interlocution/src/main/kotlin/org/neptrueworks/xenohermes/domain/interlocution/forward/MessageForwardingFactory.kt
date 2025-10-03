@@ -1,7 +1,6 @@
 package org.neptrueworks.xenohermes.domain.interlocution.forward
 
 import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
-import org.neptrueworks.xenohermes.domain.common.models.DomainService
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceAggregateRoot
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
@@ -10,7 +9,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageId
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.*
 import org.neptrueworks.xenohermes.domain.interlocution.forward.commands.ForwardMessageCommand
 import org.neptrueworks.xenohermes.domain.interlocution.forward.exceptions.*
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
@@ -22,10 +21,10 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
 public abstract class MessageForwardingFactory (
     private val correspondenceRepository: MessageCorrespondenceRepositable,
-    private val moderationRepository: InterlocutionModerationRepositable,
+    private val moderationBanRepository: InterlocutionModerationBanningRepositable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
     private val identifierGenerator: MessageIdentifierGeneratable,
-) : AggregateRootFactory(), DomainService {
+) : AggregateRootFactory() {
     internal final fun forwardMessage(command: ForwardMessageCommand): MessageCorrespondenceAggregateRoot {
         this.forwarderShouldEngageForwardAndDeparture(command);
         this.forwarderShouldNotBeBanned(command);
@@ -68,7 +67,7 @@ public abstract class MessageForwardingFactory (
         val destinationAgent = InterlocutionModerationAgent(destination.identifier);
         val participant = InterlocutionParticipant(forwarder.identifier);
 
-        val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent);
+        val moderation = this.moderationBanRepository.fetchByIdentifier(destinationAgent);
         if (moderation.interlocutionBans[participant].isBanned())
             throw ForwarderBannedException(forwarder, departure);
     }

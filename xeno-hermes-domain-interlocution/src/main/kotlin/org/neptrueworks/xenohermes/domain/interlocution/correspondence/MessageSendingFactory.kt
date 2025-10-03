@@ -11,7 +11,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.Me
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceSender
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageSendDateTime
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageUnsendStatus
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
@@ -25,7 +25,7 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 public abstract class MessageSendingFactory(
     private val identifierGenerator: MessageIdentifierGeneratable,
     private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
-    private val moderationRepository: InterlocutionModerationRepositable,
+    private val moderationBanRepository: InterlocutionModerationBanningRepositable,
 ) : AggregateRootFactory(), DomainService {
     internal final fun sendMessage(command: SendMessageFacadeCommand): MessageCorrespondenceAggregateRoot {
         val sender = command.sender;
@@ -43,7 +43,7 @@ public abstract class MessageSendingFactory(
         if (senderEngagement.engagementCatalog.checkNonengagement(engageeReceiver).isNotEngaged())
             throw MessageReceiverNotEngaged(sender, receiver);
 
-        val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent);
+        val moderation = this.moderationBanRepository.fetchByIdentifier(destinationAgent);
         if (moderation.interlocutionBans[participant].isBanned())
             throw SenderBannedException(sender, receiver);
             

@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.interlocution.moderation.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.InterlocutionModerationEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.ParticipantUnbannedEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
@@ -18,7 +18,7 @@ public data class UnbanParticipantCommand(
 
 @Service
 public final class UnbanParticipantCommandHandler(
-    private val repository: InterlocutionModerationRepositable,
+    private val repository: InterlocutionModerationBanningRepositable,
     private val eventTrigger: DomainEventRaiseable<InterlocutionModerationEvent>
 ) : CommandHandler<UnbanParticipantCommand>() {
     public override fun handle(command: UnbanParticipantCommand) {

@@ -2,8 +2,8 @@ package org.neptrueworks.xenohermes.domain.interlocution.moderation.commands
 
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationFactory
-import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationCreationFactory
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.InterlocutionModerationCreatedEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.InterlocutionModerationEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionBehaviorRestriction
@@ -19,8 +19,8 @@ public data class CreateInterlocutionModerationCommand(
 
 @Service
 public final class CreateInterlocutionModerationCommandHandler(
-    private val repository: InterlocutionModerationRepositable,
-    private val factory: InterlocutionModerationFactory,
+    private val repository: InterlocutionModerationBanningRepositable,
+    private val factory: InterlocutionModerationCreationFactory,
     private val eventTrigger: DomainEventRaiseable<InterlocutionModerationEvent>
 ) : CommandHandler<CreateInterlocutionModerationCommand>() {
     public override fun handle(command: CreateInterlocutionModerationCommand) {

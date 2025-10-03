@@ -7,7 +7,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.Interl
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 
 public abstract class InterlocutionModerationCreationFactory : AggregateRootFactory() {
-    internal final fun create(command: CreateInterlocutionModerationCommand): InterlocutionModerationBanningAggregateRoot {
+    internal final fun create(command: CreateInterlocutionModerationCommand): InterlocutionModerationCreationAggregateRoot {
         return produceInterlocutionModeration(
             moderationAgent = command.moderationAgent,
             behaviorRestriction = command.behaviorRestriction,
@@ -19,5 +19,5 @@ public abstract class InterlocutionModerationCreationFactory : AggregateRootFact
         moderationAgent: InterlocutionModerationAgent,
         behaviorRestriction: InterlocutionBehaviorRestriction,
         contentRestriction: InterlocutionContentRestriction,
-    ): InterlocutionModerationBanningAggregateRoot
+    ): InterlocutionModerationCreationAggregateRoot
 }

@@ -4,6 +4,7 @@ import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationCreationFactory
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationBanningRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationCreationRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.InterlocutionModerationCreatedEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.events.InterlocutionModerationEvent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionBehaviorRestriction
@@ -19,7 +20,7 @@ public data class CreateInterlocutionModerationCommand(
 
 @Service
 public final class CreateInterlocutionModerationCommandHandler(
-    private val repository: InterlocutionModerationBanningRepositable,
+    private val repository: InterlocutionModerationCreationRepositable,
     private val factory: InterlocutionModerationCreationFactory,
     private val eventTrigger: DomainEventRaiseable<InterlocutionModerationEvent>
 ) : CommandHandler<CreateInterlocutionModerationCommand>() {

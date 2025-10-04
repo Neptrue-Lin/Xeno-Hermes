@@ -9,12 +9,16 @@ internal final class SocialEngagementCatalogingSaver(
 ) {
     internal final fun save(aggregator: SocialEngagementCatalogingAggregator) {
         this.kSqlClient.saveCommand(aggregator.__resolve() as SocialEngager, SaveMode.UPDATE_ONLY).execute();
-        when (val operation = aggregator.engagementCataloging.operation) {
-            is SocialEngagementCatalogingOperation.Engaging -> this.kSqlClient.getAssociations(SocialEngager::engaged)
-                .save(operation.engager.identifier, operation.engagee.identifier);
-            is SocialEngagementCatalogingOperation.Disengaging -> this.kSqlClient.getAssociations(SocialEngager::engaged)
-                .delete(operation.engager.identifier, operation.engagee.identifier);
-            else -> return;
+        when (val op = aggregator.engagementCataloging.operation) {
+            is SocialEngagementCatalogingOperation.Engaging -> {
+                this.kSqlClient.getAssociations(SocialEngager::engaged).save(op.engager, op.engagee);
+                this.kSqlClient.getAssociations(SocialEngager::engaged).save(op.engagee, op.engager);
+            } 
+            is SocialEngagementCatalogingOperation.Disengaging -> {
+                this.kSqlClient.getAssociations(SocialEngager::engaged).delete(op.engager, op.engagee);
+                this.kSqlClient.getAssociations(SocialEngager::engaged).delete(op.engagee, op.engager);
+            }
+            else -> {}
         }
     }
 }

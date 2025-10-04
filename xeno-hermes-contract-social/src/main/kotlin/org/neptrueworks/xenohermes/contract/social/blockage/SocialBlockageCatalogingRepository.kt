@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository
 @Repository
 internal final class SocialBlockageCatalogingRepository(
     private val kSqlClient: KSqlClient,
+    private val saver: SocialBlockageCatalogingSaver,
 ) : SocialBlockageCatalogingRepositable {
     override fun fetchByIdentifier(blocker: SocialBlockageBlocker, blockee: SocialBlockageBlockee): SocialBlockageCatalogingAggregateRoot {
         val blockage = this.kSqlClient.findById(SocialBlocker::class, blocker);
@@ -41,9 +42,9 @@ internal final class SocialBlockageCatalogingRepository(
 
     override fun reposit(aggregateRoot: SocialBlockageCatalogingAggregateRoot) {
         val aggregator = aggregateRoot as SocialBlockageCatalogingAggregator;
-        this.kSqlClient.saveCommand(aggregator.__resolve() as SocialBlocker, SaveMode.UPDATE_ONLY).execute();
+        this.saver.save(aggregator);
     }
-    
+
     private inline val KNonNullTable<SocialBlocker>.blockee get() = this.blocker;
     private infix fun KNonNullPropExpression<SocialBlockageBlocker>.eq(blockee: SocialBlockageBlockee) =
         this eq SocialBlockageBlocker(blockee.identifier);

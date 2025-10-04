@@ -11,7 +11,7 @@ internal final class SocialEngagementCataloger(
     engager: SocialEngager,
     nonengagement: SocialEngager?,
 ) : SocialEngagementCatalog() {
-    public var operation = if (nonengagement == null)
+    internal var operation = if (nonengagement == null)
          SocialEngagementCatalogingOperation.CheckingEngaged
     else SocialEngagementCatalogingOperation.CheckingNotEngaged(engager, nonengagement)
         private set;

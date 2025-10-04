@@ -17,10 +17,10 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
-public abstract class MessageReactionFactory(
-    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
-    private val correspondenceRepository: MessageCorrespondenceRepositable,
-) : AggregateRootFactory() {
+public abstract class MessageReactionFactory: AggregateRootFactory() {
+    protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
+    protected abstract val correspondenceRepository: MessageCorrespondenceRepositable
+    
     internal final fun reactMessage(command: ReactMessageCommand): MessageReactionAggregateRoot {
         val agent = command.agent;
         val reactor = command.reactor;

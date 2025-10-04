@@ -19,12 +19,12 @@ import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagem
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 import org.neptrueworks.xenohermes.domain.social.engagement.params.isNotEngaged
 
-public abstract class MessageForwardingFactory (
-    private val correspondenceRepository: MessageCorrespondenceRepositable,
-    private val moderationRepository: InterlocutionModerationRepositable,
-    private val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
-    private val identifierGenerator: MessageIdentifierGeneratable,
-) : AggregateRootFactory() {
+public abstract class MessageForwardingFactory : AggregateRootFactory() {
+    protected abstract val correspondenceRepository: MessageCorrespondenceRepositable
+    protected abstract val moderationRepository: InterlocutionModerationRepositable
+    protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
+    protected abstract val identifierGenerator: MessageIdentifierGeneratable
+    
     internal final fun forwardMessage(command: ForwardMessageCommand): MessageCorrespondenceAggregateRoot {
         this.forwarderShouldEngageForwardAndDeparture(command);
         this.forwarderShouldNotBeBanned(command);
@@ -91,6 +91,6 @@ public abstract class MessageForwardingFactory (
         receiver: MessageCorrespondenceReceiver,
         unsendStatus: MessageUnsendStatus,
         sendDateTime: MessageSendDateTime,
-        forward: MessageForward
+        forward: MessageForward.Forwarded
     ): MessageCorrespondenceAggregateRoot
 }

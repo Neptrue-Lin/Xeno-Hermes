@@ -32,7 +32,7 @@ internal final class SocialInvitationResponseRepository(
             where(table.audience eq invitee)
             orderBy(table.issueDateTime.desc())
             select(table)
-        }.fetchFirst().run(::SocialInvitationResponseAggregator)
+        }.fetchFirst()
     }
 
     override fun fetchAllPending(issuer: SocialInvitationIssuer): Iterable<SocialInvitationAggregatable> {
@@ -43,7 +43,7 @@ internal final class SocialInvitationResponseRepository(
             where(table.expiryPeriod gt SocialInvitationExpiryPeriod.TemporaryUnexpired(LocalDateTime.now()))
 //            orderBy(table.invitationId.desc())
             select(table)
-        }.execute().map(::SocialInvitationResponseAggregator)
+        }.execute()
     }
 
     override fun reposit(aggregateRoot: SocialInvitationResponseAggregateRoot) {

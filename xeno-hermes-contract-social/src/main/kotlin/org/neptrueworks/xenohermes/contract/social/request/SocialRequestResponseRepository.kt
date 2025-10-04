@@ -27,7 +27,7 @@ internal final class SocialRequestResponseRepository(
             where(table.agent eq agent)
             orderBy(table.sendDateTime.desc())
             select(table)
-        }.fetchFirst().run(::SocialRequestResponseAggregator)
+        }.fetchFirst()
     }
 
     override fun reposit(aggregateRoot: SocialRequestResponseAggregateRoot) {

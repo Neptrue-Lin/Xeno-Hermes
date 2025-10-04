@@ -17,22 +17,19 @@ internal final class SocialEngagementCatalogingRepository(
     private val kSqlClient: KSqlClient,
     private val saver: SocialEngagementCatalogingSaver,
 ) : SocialEngagementCatalogingRepositable {
-    override fun fetchByIdentifier(
-        engager: SocialEngagementEngager,
-        engagee: SocialEngagementEngagee,
-    ): SocialEngagementCatalogingAggregateRoot {
+    override fun fetchByIdentifier(engager: SocialEngagementEngager, engagee: SocialEngagementEngagee): SocialEngagementCatalogingAggregateRoot {
         val engagement = this.kSqlClient.findById(SocialEngager::class, engager);
-        assert(engagement != null);
-
         val nonengagement = this.kSqlClient.createQuery(SocialEngager::class) {
-            where(table.engagee eq engagee)
-            where(notExists(wildSubQuery(SocialEngager::class) {
+            val notEngaged = notExists(wildSubQuery(SocialEngager::class) {
                 where(table.engager eq engager)
                 where(table.asTableEx().engaged.engagee eq engagee)
-            }))
+            })
+            where(table.engagee eq engagee)
+            where(notEngaged)
             select(table)
         }.fetchOneOrNull();
 
+        assert(engagement != null);
         return SocialEngagementCatalogingAggregator(SocialEngagementCataloger(engagement!!, nonengagement), engagement);
     }
 

@@ -25,17 +25,17 @@ internal final class SocialBlockageCatalogingRepository(
 ) : SocialBlockageCatalogingRepositable {
     override fun fetchByIdentifier(blocker: SocialBlockageBlocker, blockee: SocialBlockageBlockee): SocialBlockageCatalogingAggregateRoot {
         val blockage = this.kSqlClient.findById(SocialBlocker::class, blocker);
-        assert(blockage != null);
-
         val nonblockage = this.kSqlClient.createQuery(SocialBlocker::class) {
-            where(table.blockee eq blockee)
-            where(notExists(wildSubQuery(SocialBlocker::class) {
+            val notBlocked = notExists(wildSubQuery(SocialBlocker::class) {
                 where(table.blocker eq blocker)
                 where(table.asTableEx().blocked.blockee eq blockee)
-            }))
+            })
+            where(table.blockee eq blockee)
+            where(notBlocked)
             select(table)
         }.fetchOneOrNull();
 
+        assert(blockage != null);
         return SocialBlockageCatalogingAggregator(SocialBlockageCataloger(blockage!!, nonblockage), blockage);
     }
 

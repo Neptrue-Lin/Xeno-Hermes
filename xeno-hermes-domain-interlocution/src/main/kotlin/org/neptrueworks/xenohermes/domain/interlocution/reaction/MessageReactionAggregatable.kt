@@ -9,7 +9,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.reaction.params.MessageR
 public interface MessageReactionAggregatable : Aggregatable {
     val conversationId: ConversationIdentifier
     val messageId: MessageIdentifier
-//    val reactionManifest: MessageReactionManifest
-    val reactionStatus: MessageReactionStatus
     val reactor: MessageReactionReactor
+    //    val reactionManifest: MessageReactionManifest
+    val reactionStatus: MessageReactionStatus
 }

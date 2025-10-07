@@ -2,17 +2,20 @@ package org.neptrueworks.xenohermes.domain.interlocution.forward
 
 import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactory
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceAggregateRoot
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifierGeneratable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.*
 import org.neptrueworks.xenohermes.domain.interlocution.forward.commands.ForwardMessageCommand
 import org.neptrueworks.xenohermes.domain.interlocution.forward.exceptions.*
+import org.neptrueworks.xenohermes.domain.interlocution.forward.params.ForwardMessageDeparture
+import org.neptrueworks.xenohermes.domain.interlocution.forward.params.ForwardMessageDestination
+import org.neptrueworks.xenohermes.domain.interlocution.forward.params.MessageForwardDateTime
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.isBanned
+import org.neptrueworks.xenohermes.domain.interlocution.scheme.MessageScheme
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
@@ -25,7 +28,7 @@ public abstract class MessageForwardingFactory : AggregateRootFactory() {
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
     protected abstract val identifierGenerator: MessageIdentifierGeneratable
     
-    internal final fun forwardMessage(command: ForwardMessageCommand): MessageCorrespondenceAggregateRoot {
+    internal final fun forwardMessage(command: ForwardMessageCommand): MessageForwardingAggregateRoot {
         this.forwarderShouldEngageForwardAndDeparture(command);
         this.forwarderShouldNotBeBanned(command);
         this.forwardedMessageShouldBeSendable(command);
@@ -33,13 +36,15 @@ public abstract class MessageForwardingFactory : AggregateRootFactory() {
         // TODO: frequencyLimit
         val destinedMessageId = this.identifierGenerator.nextIdentifier(command.destinedConversationId, command.destinedMessageId);
         return produceMessageCorrespondence(
-            messageId = destinedMessageId,
-            conversationId = command.destinedConversationId,
-            sender = MessageCorrespondenceSender(command.forwarder.identifier),
-            receiver = MessageCorrespondenceReceiver(command.destination.identifier),
-            unsendStatus = MessageUnsendStatus.NOT_UNSENT,
-            sendDateTime = MessageSendDateTime(command.forwardDateTime.forwardedAt),
-            forward = MessageForward.Forwarded(command.departedConversationId, command.departedMessageId, command.departure)
+            destinedMessageId = destinedMessageId,
+            destinedConversationId = command.destinedConversationId,
+            destination = command.destination,
+            forwarder = command.forwarder,
+            departedMessageId = command.departedMessageId,
+            departedConversationId = command.departedConversationId,
+            departure = command.departure,
+            forwardDateTime = command.forwardDateTime,
+            scheme = command.scheme,
         )
     }
 
@@ -85,12 +90,14 @@ public abstract class MessageForwardingFactory : AggregateRootFactory() {
     }
 
     protected abstract fun produceMessageCorrespondence(
-        messageId: MessageIdentifier,
-        conversationId: ConversationIdentifier,
-        sender: MessageCorrespondenceSender,
-        receiver: MessageCorrespondenceReceiver,
-        unsendStatus: MessageUnsendStatus,
-        sendDateTime: MessageSendDateTime,
-        forward: MessageForward.Forwarded
-    ): MessageCorrespondenceAggregateRoot
+        destinedMessageId: MessageIdentifier,
+        destinedConversationId: ConversationIdentifier,
+        destination: ForwardMessageDestination,
+        forwarder: MessageForwarder,
+        departedMessageId: MessageIdentifier,
+        departedConversationId: ConversationIdentifier,
+        departure: ForwardMessageDeparture,
+        forwardDateTime: MessageForwardDateTime,
+        scheme: MessageScheme
+    ): MessageForwardingAggregateRoot
 }

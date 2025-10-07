@@ -6,6 +6,7 @@ import org.neptrueworks.xenohermes.domain.interlocution.conversation.Conversatio
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageSendingFactory
+import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageSendingRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageCorrespondenceEvent
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageSentEvent
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageContent
@@ -32,7 +33,7 @@ public data class SendMessageFacadeCommand(
 @Service
 public final class SendMessageFacadeCommandHandler internal constructor(
     private val factory: MessageSendingFactory,
-    private val repository: MessageCorrespondenceRepositable,
+    private val repository: MessageSendingRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageCorrespondenceEvent>
 ) : CommandHandler<SendMessageFacadeCommand>() {
     public override fun handle(command: SendMessageFacadeCommand) {

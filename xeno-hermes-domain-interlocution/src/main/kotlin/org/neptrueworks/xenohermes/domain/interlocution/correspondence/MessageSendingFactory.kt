@@ -26,7 +26,7 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
     protected abstract val engagementCatalogRepository: SocialEngagementCatalogingRepositable
     protected abstract val moderationRepository: InterlocutionModerationRepositable
             
-    internal final fun sendMessage(command: SendMessageFacadeCommand): MessageCorrespondenceAggregateRoot {
+    internal final fun sendMessage(command: SendMessageFacadeCommand): MessageSendingAggregateRoot {
         val sender = command.sender;
         val receiver = command.receiver;
         val clientMessageId = command.messageId;
@@ -55,7 +55,6 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
             sender = command.sender,
             receiver = command.receiver,
             scheme = command.scheme,
-            unsendStatus = MessageUnsendStatus.NOT_UNSENT,
             sendDateTime = command.sendDateTime
         );
     }
@@ -66,7 +65,6 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
         sender: MessageCorrespondenceSender,
         receiver: MessageCorrespondenceReceiver,
         scheme: MessageScheme,
-        unsendStatus: MessageUnsendStatus,
         sendDateTime: MessageSendDateTime
-    ): MessageCorrespondenceAggregateRoot
+    ): MessageSendingAggregateRoot
 }

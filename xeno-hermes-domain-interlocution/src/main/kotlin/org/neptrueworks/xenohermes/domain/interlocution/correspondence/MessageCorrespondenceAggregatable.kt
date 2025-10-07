@@ -6,8 +6,8 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.*
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.MessageScheme
 
 public interface MessageCorrespondenceAggregatable : Aggregatable {
-    val messageId: MessageIdentifier
     val conversationId: ConversationIdentifier
+    val messageId: MessageIdentifier
     val sender: MessageCorrespondenceSender
     val receiver: MessageCorrespondenceReceiver
     val scheme: MessageScheme

@@ -1,0 +1,7 @@
+package org.neptrueworks.xenohermes.domain.interlocution.correspondence
+
+import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRepositable
+import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
+import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageQuotation
+
+public interface MessageSendingRepositable : AggregateRepositable<MessageSendingAggregateRoot>;

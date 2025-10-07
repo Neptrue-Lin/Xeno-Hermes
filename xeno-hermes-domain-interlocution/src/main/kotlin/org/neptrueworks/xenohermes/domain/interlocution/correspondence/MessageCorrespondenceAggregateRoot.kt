@@ -13,8 +13,8 @@ import org.neptrueworks.xenohermes.domain.interlocution.scheme.isForbidden
 import org.neptrueworks.xenohermes.domain.interlocution.scheme.isUnsendWindowPast
 
 public abstract class MessageCorrespondenceAggregateRoot : AggregateRoot(), MessageCorrespondenceAggregatable {
-    public abstract override val messageId: MessageIdentifier
     public abstract override val conversationId: ConversationIdentifier
+    public abstract override val messageId: MessageIdentifier
     public abstract override val sender: MessageCorrespondenceSender
     public abstract override val receiver: MessageCorrespondenceReceiver
     public abstract override val forward: MessageForward

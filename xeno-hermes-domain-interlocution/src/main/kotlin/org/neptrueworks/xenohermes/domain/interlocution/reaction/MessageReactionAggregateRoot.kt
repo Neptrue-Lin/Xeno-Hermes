@@ -18,12 +18,12 @@ public abstract class MessageReactionAggregateRoot : AggregateRoot(), MessageRea
     public abstract override val reactor: MessageReactionReactor
     public abstract override var reactionStatus: MessageReactionStatus protected set
 
-    internal final fun changeReaction(command: ChangeMessageReactionCommand) = when (this.reactionStatus) {
+    internal final fun changeReaction(command: ChangeMessageReactionCommand) = when (val status = this.reactionStatus) {
         is MessageReactionStatus.NotReacted -> throw MessageNotReactedException(command.reactedConversation, command.reactedMessage, command.reactor);
         is MessageReactionStatus.Reacted -> {
-            if ((this.reactionStatus as Reacted).type.remainsUnchanged(command.reactionType))
+            if (status.type.remainsUnchanged(command.reactionType))
                 throw ReactionUnchangedException(command.reactedConversation, command.reactedMessage, command.reactor, command.reactionType);
-            this.reactionStatus = Reacted(command.reactionType);
+            this.reactionStatus = MessageReactionStatus.Reacted(command.reactionType);
         }
     }
     

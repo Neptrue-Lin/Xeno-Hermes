@@ -9,10 +9,12 @@ import org.neptrueworks.xenohermes.domain.interlocution.correspondence.commands.
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageCorrespondenceEvent
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageForwarder
 import org.neptrueworks.xenohermes.domain.interlocution.forward.MessageForwardingFactory
+import org.neptrueworks.xenohermes.domain.interlocution.forward.MessageForwardingRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.forward.events.MessageForwardedEvent
 import org.neptrueworks.xenohermes.domain.interlocution.forward.params.ForwardMessageDeparture
 import org.neptrueworks.xenohermes.domain.interlocution.forward.params.ForwardMessageDestination
 import org.neptrueworks.xenohermes.domain.interlocution.forward.params.MessageForwardDateTime
+import org.neptrueworks.xenohermes.domain.interlocution.scheme.MessageScheme
 import org.springframework.stereotype.Service
 
 public data class ForwardMessageCommand(
@@ -24,12 +26,13 @@ public data class ForwardMessageCommand(
     val destinedConversationId: ConversationIdentifier,
     val destinedMessageId: MessageIdentifier,
     val forwardDateTime: MessageForwardDateTime,
+    val scheme: MessageScheme
 ) : MessageCorrespondenceCommand
 
 @Service
 public final class ForwardMessageCommandHandler(
     private val factory: MessageForwardingFactory,
-    private val repository: MessageCorrespondenceRepositable,
+    private val repository: MessageForwardingRepositable,
     private val eventTrigger: DomainEventRaiseable<MessageCorrespondenceEvent>
 ) : CommandHandler<ForwardMessageCommand>() {
     public override fun handle(command: ForwardMessageCommand) {

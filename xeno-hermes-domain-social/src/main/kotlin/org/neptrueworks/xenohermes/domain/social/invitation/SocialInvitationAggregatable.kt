@@ -18,11 +18,11 @@ public interface SocialInvitationAggregatable : Aggregatable {
 }
 
 public inline fun SocialInvitationAggregatable.isValid(currentDateTime: LocalDateTime) =
-    this.activePeriod.isActivated(currentDateTime)
-            && this.expiryPeriod.isUnexpired(currentDateTime)
-            && this.revocationStatus.isEnduring()
+        this.activePeriod.isActivated(currentDateTime)
+     && this.expiryPeriod.isUnexpired(currentDateTime)
+     && this.revocationStatus.isEnduring()
 
 public inline fun SocialInvitationAggregatable.isInvalid(currentDateTime: LocalDateTime) =
-    this.activePeriod.isNotActivated(currentDateTime)
-            || this.expiryPeriod.isExpired(currentDateTime)
-            || this.revocationStatus.isRevoked()
+        this.activePeriod.isNotActivated(currentDateTime) 
+     || this.expiryPeriod.isExpired(currentDateTime)
+     || this.revocationStatus.isRevoked()

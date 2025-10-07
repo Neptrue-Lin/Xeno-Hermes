@@ -18,11 +18,11 @@ public interface SocialRequestAggregatable : Aggregatable {
 }
 
 public inline fun SocialRequestAggregatable.isPendingWhen(currentDateTime: LocalDateTime) =
-    this.expiryPeriod.isUnexpiredWhen(currentDateTime)
-            && this.revocationStatus.isEnduring()
-            && this.responseStatus.isNotResponded()
+        this.expiryPeriod.isUnexpiredWhen(currentDateTime)
+     && this.revocationStatus.isEnduring()
+     && this.responseStatus.isNotResponded()
 
 public inline fun SocialRequestAggregatable.isNotPendingWhen(currentDateTime: LocalDateTime) =
-    this.expiryPeriod.isExpiredWhen(currentDateTime)
-            || this.revocationStatus.isRevoked()
-            || this.responseStatus.isResponded()
+        this.expiryPeriod.isExpiredWhen(currentDateTime)
+     || this.revocationStatus.isRevoked()
+     || this.responseStatus.isResponded()

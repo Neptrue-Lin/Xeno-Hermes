@@ -1,8 +1,8 @@
 package org.neptrueworks.xenohermes.domain.interlocution.reaction.params
 
 public sealed class MessageReactionStatus {
-    public final object NotReacted : MessageReactionStatus()
-    public final class Reacted(val type: MessageReactionType) : MessageReactionStatus()
+    public data object NotReacted : MessageReactionStatus()
+    public data class Reacted(val type: MessageReactionType) : MessageReactionStatus()
 }
 
 public inline fun MessageReactionStatus.isReacted() = when (this) {

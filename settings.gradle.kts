@@ -10,9 +10,9 @@ include(
     "xeno-hermes-contract-common",
     "xeno-hermes-contract-interlocution",
     "xeno-hermes-contract-social",
-    "xeno-hermes-gateway-common",
-    "xeno-hermes-gateway-interlocution",
-    "xeno-hermes-gateway-social",
+    "xeno-hermes-spec-common",
+    "xeno-hermes-spec-interlocution",
+    "xeno-hermes-spec-social",
     "xeno-hermes-presence",
     "xeno-hermes-delivery"
 )

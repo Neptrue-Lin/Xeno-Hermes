@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     implementation(projects.xenoHermesDomainCommon)
-    implementation(projects.xenoHermesDomainInterlocution)
-//    implementation(projects.xenoHermesDataInterlocution)
+    implementation(projects.xenoHermesDomainSocial)
+//    implementation(projects.xenoHermesDataSocial)
     implementation(platform(libs.spring.boot.dependencies))
     implementation(libs.spring.boot.starter)
     implementation(libs.spring.boot.starter.web)

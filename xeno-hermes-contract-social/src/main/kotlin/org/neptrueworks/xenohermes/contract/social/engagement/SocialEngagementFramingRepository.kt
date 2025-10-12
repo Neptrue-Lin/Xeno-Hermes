@@ -14,10 +14,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialEngagementFramingRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialEngagementFramingRepositable {
     override fun reposit(aggregateRoot: SocialEngagementFramingAggregateRoot) {
         val aggregator = aggregateRoot as SocialEngagementFramingAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY).execute();
     }
 }

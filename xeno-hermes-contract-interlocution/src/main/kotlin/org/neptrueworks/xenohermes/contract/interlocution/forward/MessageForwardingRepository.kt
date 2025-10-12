@@ -23,10 +23,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class MessageForwardingRepository(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
 ) : MessageForwardingRepositable {
     override fun reposit(aggregateRoot: MessageForwardingAggregateRoot) {
         val aggregator = aggregateRoot as MessageForwardingAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY, AssociatedSaveMode.UPDATE).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY, AssociatedSaveMode.UPDATE).execute();
     }
 }

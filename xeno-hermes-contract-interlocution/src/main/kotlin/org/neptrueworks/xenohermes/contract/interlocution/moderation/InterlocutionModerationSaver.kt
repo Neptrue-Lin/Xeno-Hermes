@@ -6,7 +6,7 @@ import org.neptrueworks.xenohermes.contract.interlocution.moderation.params.Inte
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerator
 
 internal final class InterlocutionModerationSaver(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
 ) {
     internal final fun save(aggregator: InterlocutionModerationAggregator) {
         when (val op = aggregator.banCataloging.operation) {
@@ -15,12 +15,12 @@ internal final class InterlocutionModerationSaver(
                 this.participant = op.participant;
                 this.activePeriod = op.activePeriod;
             }
-            is InterlocutionBanCatalogingOperation.Unbanning -> this.kSqlClient.createDelete(InterlocutionBanning::class) {
+            is InterlocutionBanCatalogingOperation.Unbanning -> this.jimmerClient.createDelete(InterlocutionBanning::class) {
                 where(table.agent eq aggregator.moderationAgent)
                 where(table.participant eq op.participant)
             }.execute();
             else -> {}
         }
-        this.kSqlClient.saveCommand(aggregator.__resolve() as InterlocutionModeration).execute();
+        this.jimmerClient.saveCommand(aggregator.__resolve() as InterlocutionModeration).execute();
     }
 }

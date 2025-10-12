@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialBlockageEstablishingRepository(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
 ) : SocialBlockageEstablishingRepositable{
     override fun reposit(aggregateRoot: SocialBlockageEstablishingAggregateRoot) {
         val aggregator = aggregateRoot as SocialBlockageEstablishingAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
     }
 }

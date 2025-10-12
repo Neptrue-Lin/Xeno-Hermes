@@ -16,10 +16,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialRequestSendingRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialRequestSendingRepositable {
     override fun reposit(aggregateRoot: SocialRequestSendingAggregateRoot) {
         val aggregator = aggregateRoot as SocialRequestSendingAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.INSERT_ONLY).execute();
     }
 }

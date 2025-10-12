@@ -16,10 +16,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class MessageCorrespondenceRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : MessageCorrespondenceRepositable {
     override fun fetchByIdentifier(conversationId: ConversationIdentifier, messageId: MessageIdentifier): MessageCorrespondenceAggregateRoot {
-        return this.kSqlClient.createQuery(MessageCorrespondence::class) {
+        return this.jimmerClient.createQuery(MessageCorrespondence::class) {
             where(table.conversationId eq conversationId)
             where(table.messageId eq messageId)
             select(table)
@@ -27,7 +27,7 @@ internal final class MessageCorrespondenceRepository(
     }
 
     override fun fetchQuotedMessages(quotations: Iterable<MessageQuotation>): Iterable<MessageCorrespondenceAggregatable> {
-        return this.kSqlClient.createQuery(MessageCorrespondence::class) {
+        return this.jimmerClient.createQuery(MessageCorrespondence::class) {
             where(tuple(table.conversationId, table.messageId) valueIn quotations.quotedMessages())
             where(table.unsendStatus eq MessageUnsendStatus.NOT_UNSENT)
             select(table)
@@ -36,7 +36,7 @@ internal final class MessageCorrespondenceRepository(
 
     override fun reposit(aggregateRoot: MessageCorrespondenceAggregateRoot) {
         val aggregator = aggregateRoot as MessageCorrespondenceAggregator;
-        this.kSqlClient.save(aggregator.__resolve() as MessageCorrespondence);
+        this.jimmerClient.save(aggregator.__resolve() as MessageCorrespondence);
     }
     
     private inline fun Iterable<MessageQuotation>.quotedMessages() = this.map { 

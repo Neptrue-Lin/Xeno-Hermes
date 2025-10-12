@@ -18,10 +18,10 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class MessageSendingRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : MessageSendingRepositable {
     override fun reposit(aggregateRoot: MessageSendingAggregateRoot) {
         val aggregator = aggregateRoot as MessageSendingAggregator;
-        this.kSqlClient.save(aggregator.resolve());
+        this.jimmerClient.save(aggregator.resolve());
     }
 }

@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component
 
 @Component
 public final class SocialEngagementCountMapper(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
 ) : KTransientResolver<SocialEngagementEngager, SocialEngagementCount> {
     override fun resolve(ids: Collection<SocialEngagementEngager>): Map<SocialEngagementEngager, SocialEngagementCount> {
-        return this.kSqlClient.queries.forList(SocialEngager::engaged) {
+        return this.jimmerClient.queries.forList(SocialEngager::engaged) {
             where(table.engagerId valueIn ids)
             groupBy(table.engagerId)
             select(table.engagerId, count(table.engagerId))

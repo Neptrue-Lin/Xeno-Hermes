@@ -21,12 +21,12 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialBlockageCatalogingRepository(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
     private val saver: SocialBlockageCatalogingSaver,
 ) : SocialBlockageCatalogingRepositable {
     override fun fetchByIdentifier(blocker: SocialBlockageBlocker, blockee: SocialBlockageBlockee): SocialBlockageCatalogingAggregateRoot {
-        val blockage = this.kSqlClient.findById(SocialBlocker::class, blocker);
-        val nonblockage = this.kSqlClient.createQuery(SocialBlocker::class) {
+        val blockage = this.jimmerClient.findById(SocialBlocker::class, blocker);
+        val nonblockage = this.jimmerClient.createQuery(SocialBlocker::class) {
             val notBlocked = notExists(wildSubQuery(SocialBlocker::class) {
                 where(table.blocker eq blocker)
                 where(table.asTableEx().blocked.blockee eq blockee)

@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class MessageReactionRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : MessageReactionRepositable {
     override fun fetchByIdentifier(conversationId: ConversationIdentifier, messageId: MessageIdentifier, 
                                    reactor: MessageReactionReactor): MessageReactionAggregateRoot {
-        return this.kSqlClient.createQuery(MessageReaction::class) {
+        return this.jimmerClient.createQuery(MessageReaction::class) {
             where(table.conversationId eq conversationId)
             where(table.messageId eq messageId)
             where(table.reactor eq reactor)
@@ -26,6 +26,6 @@ internal final class MessageReactionRepository(
 
     override fun reposit(aggregateRoot: MessageReactionAggregateRoot) {
         val aggregator = aggregateRoot as MessageReactionAggregator;
-        this.kSqlClient.save(aggregator.__resolve() as MessageReaction);
+        this.jimmerClient.save(aggregator.__resolve() as MessageReaction);
     }
 }

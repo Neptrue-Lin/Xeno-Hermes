@@ -19,15 +19,15 @@ import java.time.LocalDateTime
 
 @Repository
 internal final class SocialInvitationResponseRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialInvitationResponseRepositable {
     override fun fetchByIdentifier(invitationId: SocialInvitationIdentifier): SocialInvitationResponseAggregateRoot {
-        return this.kSqlClient.findById(SocialInvitation::class, invitationId)
+        return this.jimmerClient.findById(SocialInvitation::class, invitationId)
             .run(::SocialInvitationResponseAggregator);
     }
 
     override fun fetchPrevious(issuer: SocialInvitationIssuer, invitee: SocialInvitationAudience): SocialInvitationAggregatable{
-        return this.kSqlClient.createQuery(SocialInvitation::class) {
+        return this.jimmerClient.createQuery(SocialInvitation::class) {
             where(table.issuer eq issuer)
             where(table.audience eq invitee)
             orderBy(table.issueDateTime.desc())
@@ -36,7 +36,7 @@ internal final class SocialInvitationResponseRepository(
     }
 
     override fun fetchAllPending(issuer: SocialInvitationIssuer): Iterable<SocialInvitationAggregatable> {
-        return this.kSqlClient.createQuery(SocialInvitation::class) {
+        return this.jimmerClient.createQuery(SocialInvitation::class) {
             where(table.issuer eq issuer)
             where(table.acceptanceStatus eq SocialInvitationAcceptanceStatus.NOT_ACCEPTED)
             where(table.revocationStatus eq SocialInvitationRevocationStatus.ENDURING)
@@ -48,6 +48,6 @@ internal final class SocialInvitationResponseRepository(
 
     override fun reposit(aggregateRoot: SocialInvitationResponseAggregateRoot) {
         val aggregator = aggregateRoot as SocialInvitationResponseAggregator;
-        this.kSqlClient.saveCommand(aggregator.__resolve() as SocialInvitation, SaveMode.UPDATE_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.__resolve() as SocialInvitation, SaveMode.UPDATE_ONLY).execute();
     }
 }

@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialEngagementRestrictionRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialEngagementRestrictionRepositable {
     override fun fetchByIdentifier(engager: SocialEngagementEngager): SocialEngagementRestrictionAggregateRoot {
-        return this.kSqlClient.findById(SocialEngager::class, engager)
+        return this.jimmerClient.findById(SocialEngager::class, engager)
             .run(::SocialEngagementRestrictionAggregator)
     }
     override fun reposit(aggregateRoot: SocialEngagementRestrictionAggregateRoot) {
         val aggregator = aggregateRoot as SocialEngagementRestrictionAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
     }
 }

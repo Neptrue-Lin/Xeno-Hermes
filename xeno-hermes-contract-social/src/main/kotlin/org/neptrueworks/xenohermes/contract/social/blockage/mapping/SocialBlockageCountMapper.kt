@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component
 
 @Component
 public final class SocialBlockageCountMapper(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : KTransientResolver<SocialBlockageBlocker, SocialBlockageCount> {
     override fun resolve(ids: Collection<SocialBlockageBlocker>): Map<SocialBlockageBlocker, SocialBlockageCount> {
-        return this.kSqlClient.queries.forList(SocialBlocker::blocked) {
+        return this.jimmerClient.queries.forList(SocialBlocker::blocked) {
             where(table.blockerId valueIn ids)
             groupBy(table.blockerId)
             select(table.blockerId, count(table.blockerId))

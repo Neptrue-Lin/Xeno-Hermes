@@ -14,15 +14,15 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialRequestResponseRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialRequestResponseRepositable {
     override fun fetchByIdentifier(socialRequestId: SocialRequestIdentifier): SocialRequestResponseAggregateRoot {
-        return this.kSqlClient.findById(SocialRequest::class, socialRequestId)
+        return this.jimmerClient.findById(SocialRequest::class, socialRequestId)
             .run(::SocialRequestResponseAggregator);
     }
 
     override fun fetchPrevious(requester: SocialRequestRequester, agent: SocialRequestAgent): SocialRequestAggregatable {
-        return this.kSqlClient.createQuery(SocialRequest::class) {
+        return this.jimmerClient.createQuery(SocialRequest::class) {
             where(table.requester eq requester)
             where(table.agent eq agent)
             orderBy(table.sendDateTime.desc())
@@ -32,6 +32,6 @@ internal final class SocialRequestResponseRepository(
 
     override fun reposit(aggregateRoot: SocialRequestResponseAggregateRoot) {
         val aggregator = aggregateRoot as SocialRequestResponseAggregator;
-        this.kSqlClient.saveCommand(aggregator.__resolve() as SocialRequest, SaveMode.UPDATE_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.__resolve() as SocialRequest, SaveMode.UPDATE_ONLY).execute();
     }
 }

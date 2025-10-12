@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class InterlocutionModerationRepository(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
     private val saver: InterlocutionModerationSaver
 ) : InterlocutionModerationRepositable {
     override fun fetchByIdentifier(moderationAgent: InterlocutionModerationAgent, participant: InterlocutionParticipant): InterlocutionModerationAggregateRoot {
-        val moderation = this.kSqlClient.findById(InterlocutionModeration::class, moderationAgent);
-        val ban = this.kSqlClient.createQuery(InterlocutionBanning::class) {
+        val moderation = this.jimmerClient.findById(InterlocutionModeration::class, moderationAgent);
+        val ban = this.jimmerClient.createQuery(InterlocutionBanning::class) {
             where(table.agent eq moderationAgent)
             where(table.participant eq participant)
             select(table)

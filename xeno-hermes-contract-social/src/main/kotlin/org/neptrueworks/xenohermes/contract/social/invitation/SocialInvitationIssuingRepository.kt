@@ -21,10 +21,10 @@ import java.time.LocalDateTime
 
 @Repository
 internal final class SocialInvitationIssuingRepository(
-    private val kSqlClient: KSqlClient
+    private val jimmerClient: KSqlClient
 ) : SocialInvitationIssuingRepositable {
     override fun reposit(aggregateRoot: SocialInvitationIssuingAggregateRoot) {
         val aggregator = aggregateRoot as SocialInvitationIssuingAggregator;
-        this.kSqlClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
+        this.jimmerClient.saveCommand(aggregator.resolve(), SaveMode.UPDATE_ONLY).execute();
     }
 }

@@ -14,12 +14,12 @@ import org.springframework.stereotype.Repository
 
 @Repository
 internal final class SocialEngagementCatalogingRepository(
-    private val kSqlClient: KSqlClient,
+    private val jimmerClient: KSqlClient,
     private val saver: SocialEngagementCatalogingSaver,
 ) : SocialEngagementCatalogingRepositable {
     override fun fetchByIdentifier(engager: SocialEngagementEngager, engagee: SocialEngagementEngagee): SocialEngagementCatalogingAggregateRoot {
-        val engagement = this.kSqlClient.findById(SocialEngager::class, engager);
-        val nonengagement = this.kSqlClient.createQuery(SocialEngager::class) {
+        val engagement = this.jimmerClient.findById(SocialEngager::class, engager);
+        val nonengagement = this.jimmerClient.createQuery(SocialEngager::class) {
             val notEngaged = notExists(wildSubQuery(SocialEngager::class) {
                 where(table.engager eq engager)
                 where(table.asTableEx().engaged.engagee eq engagee)

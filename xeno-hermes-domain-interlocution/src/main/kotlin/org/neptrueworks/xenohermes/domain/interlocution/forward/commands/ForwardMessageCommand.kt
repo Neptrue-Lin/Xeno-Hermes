@@ -3,7 +3,6 @@ package org.neptrueworks.xenohermes.domain.interlocution.forward.commands
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.commands.MessageCorrespondenceCommand
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageCorrespondenceEvent
@@ -24,7 +23,6 @@ public data class ForwardMessageCommand(
     val departedConversationId: ConversationIdentifier,
     val departedMessageId: MessageIdentifier,
     val destinedConversationId: ConversationIdentifier,
-    val destinedMessageId: MessageIdentifier,
     val forwardDateTime: MessageForwardDateTime,
     val scheme: MessageScheme
 ) : MessageCorrespondenceCommand
@@ -37,7 +35,7 @@ public final class ForwardMessageCommandHandler(
 ) : CommandHandler<ForwardMessageCommand>() {
     public override fun handle(command: ForwardMessageCommand) {
         val correspondence = this.factory.forwardMessage(command);
-        this.eventTrigger.raise(MessageForwardedEvent.initialize(command));
+        this.eventTrigger.raise(MessageForwardedEvent.initialize(command, correspondence.messageId));
         this.repository.reposit(correspondence);
     }
 }

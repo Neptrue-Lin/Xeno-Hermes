@@ -15,6 +15,7 @@ dependencies {
 //    implementation(libs.postgresql)
     implementation(libs.jimmer.spring.boot.starter)
     implementation(libs.jimmer.sql.kotlin)
+    implementation(libs.redisson.spring.boot.starter)
     testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)

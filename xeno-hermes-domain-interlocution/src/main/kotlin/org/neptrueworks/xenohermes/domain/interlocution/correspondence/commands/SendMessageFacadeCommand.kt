@@ -3,8 +3,6 @@ package org.neptrueworks.xenohermes.domain.interlocution.correspondence.commands
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageCorrespondenceRepositable
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageSendingFactory
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.MessageSendingRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.events.MessageCorrespondenceEvent
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service
 
 public data class SendMessageFacadeCommand(
     val conversationId: ConversationIdentifier,
-    val messageId: MessageIdentifier,
     val sender: MessageCorrespondenceSender,
     val receiver: MessageCorrespondenceReceiver,
     val content: MessageContent,

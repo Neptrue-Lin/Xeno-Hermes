@@ -10,6 +10,7 @@ junitPlatformLauncher = "1.11.3"
 testcontainers = "1.16.0"
 jimmer = "0.9.110"
 postgresql = "42.7.4"
+redisson = "3.52.0"
 ksp = "2.2.0-2.0.2"
 konsist = "0.17.3"
 
@@ -47,6 +48,8 @@ jimmer-ksp = { group = "org.babyfish.jimmer", name = "jimmer-ksp", version.ref =
 jimmer-sql-kotlin = { group = "org.babyfish.jimmer", name = "jimmer-sql-kotlin", version.ref = "jimmer" }
 
 postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+
+redisson-spring-boot-starter = { group = "org.redisson", name = "redisson-spring-boot-starter", version.ref = "redisson" }
 
 konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
 

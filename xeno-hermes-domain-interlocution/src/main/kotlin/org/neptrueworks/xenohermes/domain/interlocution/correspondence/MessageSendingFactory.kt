@@ -29,7 +29,6 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
     internal final fun sendMessage(command: SendMessageFacadeCommand): MessageSendingAggregateRoot {
         val sender = command.sender;
         val receiver = command.receiver;
-        val clientMessageId = command.messageId;
         val conversation = command.conversationId;
 
         val engagerSender = SocialEngagementEngager(sender.identifier);
@@ -47,10 +46,10 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
             throw SenderBannedException(sender, receiver);
             
         if (command.length isOverlength command.scheme.lengthThreshold) 
-            throw MessageOverlengthException(conversation, clientMessageId, sender);
+            throw MessageOverlengthException(conversation, sender);
         
         return produceMessageCorrespondence(
-            messageId = this.identifierGenerator.nextIdentifier(conversation, clientMessageId),
+            messageId = this.identifierGenerator.nextIdentifier(conversation),
             conversationId = command.conversationId,
             sender = command.sender,
             receiver = command.receiver,

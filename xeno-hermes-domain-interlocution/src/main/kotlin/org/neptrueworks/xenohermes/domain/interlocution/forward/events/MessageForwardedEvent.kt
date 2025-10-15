@@ -18,14 +18,14 @@ public data class MessageForwardedEvent private constructor(
     val destinedConversation: ConversationIdentifier,
 ) : MessageCorrespondenceEvent {
     internal companion object Initializer {
-        internal final inline fun initialize(command: ForwardMessageCommand) = MessageForwardedEvent(
+        internal final inline fun initialize(command: ForwardMessageCommand, destinedMessageId: MessageIdentifier) = MessageForwardedEvent(
             forwarder = command.forwarder,
             departure = command.departure,
             destination = command.destination,
             departedConversation = command.departedConversationId,
             destinedConversation = command.destinedConversationId,
             departedMessageId = command.departedMessageId,
-            destinedMessageId = command.destinedMessageId,
+            destinedMessageId = destinedMessageId,
         )
     }
 }

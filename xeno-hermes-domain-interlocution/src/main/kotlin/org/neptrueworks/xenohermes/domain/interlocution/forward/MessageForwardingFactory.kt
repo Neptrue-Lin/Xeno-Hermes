@@ -34,9 +34,8 @@ public abstract class MessageForwardingFactory : AggregateRootFactory() {
         this.forwardedMessageShouldBeSendable(command);
         
         // TODO: frequencyLimit
-        val destinedMessageId = this.identifierGenerator.nextIdentifier(command.destinedConversationId, command.destinedMessageId);
         return produceMessageCorrespondence(
-            destinedMessageId = destinedMessageId,
+            destinedMessageId = this.identifierGenerator.nextIdentifier(command.destinedConversationId),
             destinedConversationId = command.destinedConversationId,
             destination = command.destination,
             forwarder = command.forwarder,

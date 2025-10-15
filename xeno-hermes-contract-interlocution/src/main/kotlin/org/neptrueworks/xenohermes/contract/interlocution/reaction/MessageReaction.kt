@@ -1,6 +1,8 @@
 package org.neptrueworks.xenohermes.contract.interlocution.reaction
 
 import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.GeneratedValue
+import org.babyfish.jimmer.sql.GenerationType
 import org.babyfish.jimmer.sql.Id
 import org.babyfish.jimmer.sql.Key
 import org.babyfish.jimmer.sql.KeyUniqueConstraint
@@ -17,6 +19,7 @@ internal typealias MessageReactingDraft = MessageReactionDraft.`$`.DraftImpl;
 @KeyUniqueConstraint
 public interface MessageReaction : MessageReactionAggregatable {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val reactionId: MessageReactionIdentifier
     @Key
     override val conversationId: ConversationIdentifier

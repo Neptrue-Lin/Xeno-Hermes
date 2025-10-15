@@ -52,6 +52,6 @@ public abstract class MessageReactionFactory: AggregateRootFactory() {
         conversationId: ConversationIdentifier,
         messageId: MessageIdentifier,
         reactor: MessageReactionReactor,
-        status: MessageReactionStatus
+        status: MessageReactionStatus.Reacted
     ): MessageReactionAggregateRoot
 }

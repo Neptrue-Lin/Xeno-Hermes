@@ -5,14 +5,14 @@ import org.neptrueworks.xenohermes.contract.interlocution.moderation.params.Inte
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionBanActivePeriod
 import java.time.LocalDateTime
 
-public final class InterlocutionBanActivePeriodMapper : ScalarProvider<InterlocutionBanActivePeriod, LocalDateTime>{
-    override fun toScalar(sqlValue: LocalDateTime) = when(sqlValue) {
-        LocalDateTime.MAX-> InterlocutionBanActivePeriod.Permanent;
-        else -> InterlocutionBanActivePeriod.Temporal(sqlValue);
+public final class InterlocutionBanActivePeriodMapper : ScalarProvider<InterlocutionBanActivePeriod, LocalDateTime> {
+    public override fun toScalar(sqlValue: LocalDateTime) = when (sqlValue) {
+        LocalDateTime.MAX -> InterlocutionBanActivePeriod.Permanent;
+        else              -> InterlocutionBanActivePeriod.Temporal(sqlValue);
     }
 
-    override fun toSql(scalarValue: InterlocutionBanActivePeriod) = when(scalarValue) {
+    public override fun toSql(scalarValue: InterlocutionBanActivePeriod) = when (scalarValue) {
         is InterlocutionBanActivePeriod.Permanent -> LocalDateTime.MAX;
-        is InterlocutionBanActivePeriod.Temporal -> scalarValue.banUntil;
+        is InterlocutionBanActivePeriod.Temporal  -> scalarValue.banUntil;
     }
 }

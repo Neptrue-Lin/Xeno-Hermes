@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component
 @Component
 internal final class MessageReactionProducer(
     override val engagementCatalogRepository: SocialEngagementCatalogingRepositable,
-    override val correspondenceRepository: MessageCorrespondenceRepositable
+    override val correspondenceRepository: MessageCorrespondenceRepositable,
 ) : MessageReactionFactory() {
     override fun produceMessageReaction(
         conversationId: ConversationIdentifier,
         messageId: MessageIdentifier,
         reactor: MessageReactionReactor,
-        status: MessageReactionStatus,
-    ): MessageReactionAggregateRoot = MessageReactionAggregator(produce{
+        status: MessageReactionStatus.Reacted,
+    ): MessageReactionAggregateRoot = MessageReactionAggregator(produce {
         this.conversationId = conversationId
         this.messageId = messageId
         this.reactor = reactor

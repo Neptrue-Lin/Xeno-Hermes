@@ -4,12 +4,11 @@ import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRootFactor
 import org.neptrueworks.xenohermes.domain.interlocution.conversation.ConversationIdentifier
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.commands.SendMessageFacadeCommand
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exceptions.MessageOverlengthException
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exceptions.MessageReceiverNotEngaged
+import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exceptions.MessageReceiverNotEngagedException
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.exceptions.SenderBannedException
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceReceiver
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageCorrespondenceSender
 import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageSendDateTime
-import org.neptrueworks.xenohermes.domain.interlocution.correspondence.params.MessageUnsendStatus
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.InterlocutionModerationRepositable
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionModerationAgent
 import org.neptrueworks.xenohermes.domain.interlocution.moderation.params.InterlocutionParticipant
@@ -39,7 +38,7 @@ public abstract class MessageSendingFactory: AggregateRootFactory() {
 
         val senderEngagement = this.engagementCatalogRepository.fetchByIdentifier(engagerSender, engageeReceiver);
         if (senderEngagement.engagementCatalog.checkNonengagement(engageeReceiver).isNotEngaged())
-            throw MessageReceiverNotEngaged(sender, receiver);
+            throw MessageReceiverNotEngagedException(sender, receiver);
 
         val moderation = this.moderationRepository.fetchByIdentifier(destinationAgent, participant);
         if (moderation.banCatalog[participant].isBanned())

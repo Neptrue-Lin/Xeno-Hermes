@@ -9,6 +9,6 @@ import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResp
 internal final class SocialInvitationIssuingAggregator(
     base: SocialInvitation?,
     draft: SocialInvitingDraft = SocialInvitingDraft(DraftContext(null), base),
-) : SocialInvitationIssuingAggregateRoot(), DraftSpi by draft, SocialInvitationDraft by draft {
+) : SocialInvitationIssuingAggregateRoot(), DraftSpi by draft, SocialInvitation by draft {
     internal final fun resolve() = this.__resolve() as SocialInvitation;
 }

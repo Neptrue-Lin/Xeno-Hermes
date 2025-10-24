@@ -7,6 +7,6 @@ import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementFram
 internal final class SocialEngagementFramingAggregator(
     base: SocialEngager?,
     draft: SocialEngagementDraft = SocialEngagementDraft(DraftContext(null), base),
-) : SocialEngagementFramingAggregateRoot(), DraftSpi by draft, SocialEngagerDraft by draft {
+) : SocialEngagementFramingAggregateRoot(), DraftSpi by draft, SocialEngager by draft {
     internal final fun resolve() = this.__resolve() as SocialEngager;
 }

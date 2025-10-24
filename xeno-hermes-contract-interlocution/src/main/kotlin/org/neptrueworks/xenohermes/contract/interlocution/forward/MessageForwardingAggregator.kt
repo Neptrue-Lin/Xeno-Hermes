@@ -11,6 +11,6 @@ import org.neptrueworks.xenohermes.domain.interlocution.forward.MessageForwardin
 internal final class MessageForwardingAggregator(
     base: MessageCorrespondence?,
     draft: MessageCorrespondingDraft = MessageCorrespondingDraft(DraftContext(null), base),
-) : MessageForwardingAggregateRoot(), DraftSpi by draft, MessageCorrespondenceDraft by draft {
+) : MessageForwardingAggregateRoot(), DraftSpi by draft, MessageCorrespondence by draft {
     internal final fun resolve() = this.__resolve() as MessageCorrespondence;
 }

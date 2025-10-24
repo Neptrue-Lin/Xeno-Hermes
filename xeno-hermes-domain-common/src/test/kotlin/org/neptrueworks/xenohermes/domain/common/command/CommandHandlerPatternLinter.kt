@@ -10,6 +10,7 @@ import com.lemonappdev.konsist.api.verify.assertTrue
 import org.junit.jupiter.api.Test
 import org.neptrueworks.xenohermes.domain.common.DomainRegistry.Companion.DOMAIN_COMMON_MODULE
 import org.neptrueworks.xenohermes.domain.common.DomainRegistry.Companion.DOMAIN_MODULES_EXCLUDING_COMMON
+import org.springframework.stereotype.Service
 
 public final class CommandHandlerPatternLinter {
     @Test
@@ -45,5 +46,12 @@ public final class CommandHandlerPatternLinter {
         Konsist.scopeFromModules(DOMAIN_MODULES_EXCLUDING_COMMON).classes()
             .withParentInterfaceOf(CommandHandler::class)
             .assertTrue { it.hasFinalModifier }
+    }
+    
+    @Test
+    public final fun `Lifecycle Management - command handler should be annotated with @Service`() {
+        Konsist.scopeFromModules(DOMAIN_MODULES_EXCLUDING_COMMON).classes()
+            .withParentInterfaceOf(CommandHandler::class)
+            .assertTrue { it.hasAnnotationOf(Service::class) }
     }
 }

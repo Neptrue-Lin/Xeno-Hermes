@@ -30,7 +30,8 @@ public final class SocialEngagementCountMapper(
     private final inline val Engagement.engagerId get() = this.source.engager;
     private final inline val Select.engager get() = this._1;
     private final inline val Select.engagementCount get() = SocialEngagementCount(this._2);
-    
-    private typealias Engagement = KNonNullTable<Association<SocialEngager, SocialEngager>>;
-    private typealias Select = Tuple2<SocialEngagementEngager, Long>;
+
 }
+
+private typealias Select = Tuple2<SocialEngagementEngager, Long>;
+private typealias Engagement = KNonNullTable<Association<SocialEngager, SocialEngager>>;

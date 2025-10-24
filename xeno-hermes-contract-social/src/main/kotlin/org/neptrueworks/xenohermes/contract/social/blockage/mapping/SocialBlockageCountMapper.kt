@@ -30,6 +30,7 @@ public final class SocialBlockageCountMapper(
     private final inline val Select.blocker get() = this._1;
     private final inline val Select.blockageCount get() = SocialBlockageCount(this._2);
 
-    private typealias Blockage = KNonNullTable<Association<SocialBlocker, SocialBlocker>>;
-    private typealias Select = Tuple2<SocialBlockageBlocker, Long>;
 }
+
+private typealias Blockage = KNonNullTable<Association<SocialBlocker, SocialBlocker>>;
+private typealias Select = Tuple2<SocialBlockageBlocker, Long>;

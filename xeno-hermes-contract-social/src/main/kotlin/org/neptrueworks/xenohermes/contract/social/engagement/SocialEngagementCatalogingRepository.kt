@@ -22,7 +22,7 @@ internal final class SocialEngagementCatalogingRepository(
         val nonengagement = this.jimmerClient.createQuery(SocialEngager::class) {
             val notEngaged = notExists(wildSubQuery(SocialEngager::class) {
                 where(table.engager eq engager)
-                where(table.asTableEx().engaged.engagee eq engagee)
+                where(table.engagee eq engagee)
             })
             where(table.engagee eq engagee)
             where(notEngaged)
@@ -37,7 +37,10 @@ internal final class SocialEngagementCatalogingRepository(
         this.saver.save(aggregateRoot as SocialEngagementCatalogingAggregator);
     }
 
-    private inline val KNonNullTable<SocialEngager>.engagee get() = this.engager;
-    private infix fun KNonNullPropExpression<SocialEngagementEngager>.eq(engagee: SocialEngagementEngagee) =
+    private inline val SocialEngagement.engagee get() = this.asTableEx().engager;
+    private infix fun SocialEngagementEngagerExpr.eq(engagee: SocialEngagementEngagee) =
         this eq SocialEngagementEngager(engagee.identifier);
 }
+
+private typealias SocialEngagement = KNonNullTable<SocialEngager>;
+private typealias SocialEngagementEngagerExpr = KNonNullPropExpression<SocialEngagementEngager>;

@@ -37,7 +37,7 @@ public abstract class SocialInvitationIssuingFactory : AggregateRootFactory() {
             activePeriod = command.activePeriod,
             expiryPeriod = command.expiryPeriod,
             revocationStatus = SocialInvitationRevocationStatus.ENDURING,
-            acceptanceStatus = command.acceptanceStatus,
+            acceptanceStatus = SocialInvitationAcceptanceStatus.ACCEPTED,
         )
     }
 

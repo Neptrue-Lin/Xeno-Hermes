@@ -13,7 +13,6 @@ public data class IssueSocialInvitationCommand(
     val issuer: SocialInvitationIssuer,
     val agent: SocialInvitationAgent,
     val audience: SocialInvitationAudience,
-    val acceptanceStatus: SocialInvitationAcceptanceStatus,
     val activePeriod: SocialInvitationActivePeriod,
     val expiryPeriod: SocialInvitationExpiryPeriod,
 ) : SocialInvitationCommand

@@ -1,8 +1,8 @@
 package org.neptrueworks.xenohermes.domain.social.blockage
 
 import org.neptrueworks.xenohermes.domain.common.aggregation.AggregateRoot
-import org.neptrueworks.xenohermes.domain.social.blockage.commands.BlockInterlocutorCommand
-import org.neptrueworks.xenohermes.domain.social.blockage.commands.UnblockInterlocutorCommand
+import org.neptrueworks.xenohermes.domain.social.blockage.commands.EstablishBlockageCommand
+import org.neptrueworks.xenohermes.domain.social.blockage.commands.InitiateUnblockageCommand
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockageThresholdExceededException
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockeeNotBlockedException
 import org.neptrueworks.xenohermes.domain.social.blockage.exceptions.BlockerAlreadyBlockedException
@@ -21,7 +21,7 @@ public abstract class SocialBlockageCatalogingAggregateRoot: AggregateRoot(), So
     protected abstract val blockageCataloging: SocialBlockageCatalog;
     public final val blockageCatalog: SocialBlockageCatalogable = this.blockageCataloging;
     
-    internal final fun blockInterlocutor(command: BlockInterlocutorCommand) {
+    internal final fun establishBlockage(command: EstablishBlockageCommand) {
         val nonblockage = this.blockageCataloging.checkNonblockage(command.blockee);
         if (nonblockage.isBlocked())
             throw BlockerAlreadyBlockedException(command.blocker, command.blockee);
@@ -33,7 +33,7 @@ public abstract class SocialBlockageCatalogingAggregateRoot: AggregateRoot(), So
         this.blockageCataloging.block(command.blocker, command.blockee);
     }
     
-    internal final fun unblockInterlocutor(command: UnblockInterlocutorCommand) {
+    internal final fun initiateUnblockage(command: InitiateUnblockageCommand) {
         val nonblockage = this.blockageCataloging.checkNonblockage(command.unblockee);
         if (nonblockage.isNotBlocked())
             throw BlockeeNotBlockedException(command.unblocker, command.unblockee);

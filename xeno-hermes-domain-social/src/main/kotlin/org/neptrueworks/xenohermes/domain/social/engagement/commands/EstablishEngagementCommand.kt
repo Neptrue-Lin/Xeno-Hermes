@@ -3,7 +3,7 @@ package org.neptrueworks.xenohermes.domain.social.engagement.commands
 import org.neptrueworks.xenohermes.domain.common.command.CommandHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
 import org.neptrueworks.xenohermes.domain.social.engagement.SocialEngagementCatalogingRepositable
-import org.neptrueworks.xenohermes.domain.social.engagement.events.InterlocutorEngagedEvent
+import org.neptrueworks.xenohermes.domain.social.engagement.events.EngagementEstablishedEvent
 import org.neptrueworks.xenohermes.domain.social.engagement.events.SocialEngagementEvent
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngagee
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
@@ -24,7 +24,7 @@ public final class EstablishEngagementCommandHandler(
     public override fun handle(command: EstablishEngagementCommand) {
         val engagementCataloging = this.repository.fetchByIdentifier(command.engager, command.engagee);
         engagementCataloging.establishEngagement(command);
-        this.eventTrigger.raise(InterlocutorEngagedEvent.initialize(command));
+        this.eventTrigger.raise(EngagementEstablishedEvent.initialize(command));
         this.repository.reposit(engagementCataloging);
     }
 }

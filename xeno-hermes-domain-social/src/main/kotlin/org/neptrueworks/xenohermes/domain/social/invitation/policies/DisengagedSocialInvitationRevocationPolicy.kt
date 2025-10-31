@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.invitation.policies
 
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.engagement.events.InterlocutorDisengagedEvent
+import org.neptrueworks.xenohermes.domain.social.engagement.events.DisengagementInitiatedEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommand
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommandHandler
@@ -17,8 +17,8 @@ public final class DisengagedSocialInvitationRevocationPolicy(
     private val commandHandler: RevokeSocialInvitationCommandHandler,
     private val invitationResponseRepository: SocialInvitationResponseRepositable,
     private val eventTrigger: DomainEventRaiseable<DisengagedSocialInvitationRevokedEvent>
-) : DomainEventHandler<InterlocutorDisengagedEvent>() {
-    public override fun handle(event: InterlocutorDisengagedEvent) {
+) : DomainEventHandler<DisengagementInitiatedEvent>() {
+    public override fun handle(event: DisengagementInitiatedEvent) {
         val issuer = SocialInvitationIssuer(event.disengager.identifier);
         this.invitationResponseRepository.fetchAllPending(issuer).forEach { invitation ->
             val revoker = SocialInvitationRevoker(invitation.agent.identifier);

@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.request.policies
 
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorBlockedEvent
+import org.neptrueworks.xenohermes.domain.social.blockage.events.BlockageEstablishedEvent
 import org.neptrueworks.xenohermes.domain.social.request.SocialRequestResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.request.commands.RejectSocialRequestCommand
 import org.neptrueworks.xenohermes.domain.social.request.commands.RejectSocialRequestCommandHandler
@@ -19,8 +19,8 @@ public final class BlockedSocialRequestRejectionPolicy(
     private val requestResponseRepository: SocialRequestResponseRepositable,
     private val commandHandler: RejectSocialRequestCommandHandler,
     private val eventTrigger: DomainEventRaiseable<BlockedSocialRequestRejectedEvent>
-) : DomainEventHandler<InterlocutorBlockedEvent>() {
-    public override fun handle(event: InterlocutorBlockedEvent) {
+) : DomainEventHandler<BlockageEstablishedEvent>() {
+    public override fun handle(event: BlockageEstablishedEvent) {
         val requester = SocialRequestRequester(event.blocker.identifier);
         val agent = SocialRequestAgent(event.blockee.identifier);
         val socialRequest = this.requestResponseRepository.fetchPrevious(requester, agent);

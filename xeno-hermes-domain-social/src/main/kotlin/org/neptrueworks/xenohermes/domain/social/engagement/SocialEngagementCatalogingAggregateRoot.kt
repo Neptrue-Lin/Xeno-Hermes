@@ -27,7 +27,7 @@ public abstract class SocialEngagementCatalogingAggregateRoot : AggregateRoot(),
         this.engagementCataloging.engage(command.engager, command.engagee);
     }
 
-    internal final fun dissolveEngagement(command: DissolveEngagementCommand) {
+    internal final fun initiateDisengagement(command: InitiateDisengagementCommand) {
         val nonengagement = this.engagementCataloging.checkNonengagement(command.disengagee);
         if (nonengagement.isNotEngaged())
             throw DisengageeNotEngagedException(command.disengager);

@@ -1,13 +1,13 @@
 package org.neptrueworks.xenohermes.domain.social.engagement.events
 
-import org.neptrueworks.xenohermes.domain.social.engagement.commands.PermitInvitationEngagementCommand
+import org.neptrueworks.xenohermes.domain.social.engagement.commands.ForbidInvitationEngagementCommand
 import org.neptrueworks.xenohermes.domain.social.engagement.params.SocialEngagementEngager
 
-public data class SocialInvitationEngagementPermittedEvent private constructor(
+public data class InvitationEngagementForbiddenEvent private constructor(
     val engager: SocialEngagementEngager,
 ) : SocialEngagementEvent {
     internal companion object Initializer {
-        internal final inline fun initialize(command: PermitInvitationEngagementCommand) = SocialInvitationEngagementPermittedEvent(
+        internal final inline fun initialize(command: ForbidInvitationEngagementCommand) = InvitationEngagementForbiddenEvent(
             engager = command.engager,
         )
     }

@@ -2,7 +2,7 @@ package org.neptrueworks.xenohermes.domain.social.invitation.policies
 
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventHandler
 import org.neptrueworks.xenohermes.domain.common.event.DomainEventRaiseable
-import org.neptrueworks.xenohermes.domain.social.blockage.events.InterlocutorBlockedEvent
+import org.neptrueworks.xenohermes.domain.social.blockage.events.BlockageEstablishedEvent
 import org.neptrueworks.xenohermes.domain.social.invitation.SocialInvitationResponseRepositable
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommand
 import org.neptrueworks.xenohermes.domain.social.invitation.commands.RevokeSocialInvitationCommandHandler
@@ -19,8 +19,8 @@ public final class BlockedSocialInvitationRevocationPolicy(
     private val commandHandler: RevokeSocialInvitationCommandHandler,
     private val invitationResponseRepository: SocialInvitationResponseRepositable,
     private val eventTrigger: DomainEventRaiseable<BlockedSocialInvitationRevokedEvent>
-) : DomainEventHandler<InterlocutorBlockedEvent>() {
-    public override fun handle(event: InterlocutorBlockedEvent) {
+) : DomainEventHandler<BlockageEstablishedEvent>() {
+    public override fun handle(event: BlockageEstablishedEvent) {
         val issuer = SocialInvitationIssuer(event.blocker.identifier);
         val invitee = SocialInvitationAudience(event.blockee.identifier);
         
